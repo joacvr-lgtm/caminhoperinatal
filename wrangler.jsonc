@@ -12,7 +12,7 @@
   },
   // Base de dados do CRM, criada no Cloudflare com a jurisdição UE (os dados ficam na União Europeia).
   "d1_databases": [
-    { "binding": "DB", "database_name": "caminho-crm", "database_id": "POR-PREENCHER" }
+    { "binding": "DB", "database_name": "caminho-crm", "database_id": "d19323e2-3abe-42e3-9a70-02284cc33e6a" }
   ],
   // Todos os dias às 4h (UTC), atualiza clientes e encomendas da Shopify.
   "triggers": { "crons": ["17 4 * * *"] },
