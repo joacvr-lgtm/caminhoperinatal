@@ -23,6 +23,8 @@
     "ACCESS_AUD": "5237d8729c5dae6c8f46847efd5af0d445123d9d423d1ef00082fab2daf3c4f2",
     // Emails da equipa, separados por vírgulas. Vazio: vale só o que o Access deixar entrar.
     "EQUIPA_EMAILS": "",
+    // Quem pode marcar «Não enviar ações comerciais» e importar a coluna em_consulta da folha antiga.
+    "RESPONSAVEL_EMAIL": "joacvr@gmail.com",
     "SHOPIFY_LOJA": "palavraseoutrascoisas.myshopify.com",
     "SHOPIFY_API_VERSAO": "2026-07"
     // SHOPIFY_CLIENT_ID e SHOPIFY_CLIENT_SECRET são segredos: guardam-se em Settings → Variables and Secrets, nunca aqui.

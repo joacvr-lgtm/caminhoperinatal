@@ -29,6 +29,19 @@ Alguns elementos do mapa (questionários, guias dos instrumentos, consultas) viv
 - Contactos criados à mão juntam-se à cliente da Shopify com o mesmo email.
 - Um contacto apagado no CRM não volta a ser importado. Apaga-o também na Shopify.
 
+**Separadores:**
+- **Contactos:** ficha com tipo, estado, interesse, canal, cidade, encomendas e histórico.
+- **Oportunidades:** empresas, autarquias, IPSS, marcas e formação, com fase, valor, próxima ação e responsável.
+- **Tarefas:** da equipa, por área, responsável, prazo e estado.
+- **Importar:** cola um separador copiado do Google Sheets, ou um CSV. Pode repetir-se sem duplicar: as clientes juntam-se pelo email, as oportunidades pela entidade e pelo produto, e as tarefas pelo id.
+- **Registo:** quem fez o quê.
+
+**Duas regras do RGPD que o CRM aplica sozinho:**
+- **A fase da vida** (gravidez, pós-parto) é informação de saúde. Só se guarda se a ficha disser que a pessoa autorizou por escrito. Se a autorização for retirada, a fase apaga-se.
+- **«Não enviar ações comerciais»** só pode ser mudado pela responsável (`RESPONSAVEL_EMAIL`), e nunca guarda o motivo. A coluna `em_consulta` da folha antiga passa a esta marca.
+
+Os textos da política de privacidade e dos consentimentos estão em `docs/`, para rever antes de publicar.
+
 ### Configurar (uma vez)
 
 1. **Base de dados:** Cloudflare → *Storage & databases → D1 → Create*, nome `caminho-crm`, em *Location* escolher **Jurisdiction: EU**. Copiar o *Database ID* para `database_id` em `wrangler.jsonc`.

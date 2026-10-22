@@ -49,7 +49,9 @@
 
   <nav role="tablist" aria-label="Secções do CRM">
     <button role="tab" aria-selected="true" data-tab="contactos">Contactos</button>
+    <button role="tab" aria-selected="false" data-tab="oportunidades">Oportunidades</button>
     <button role="tab" aria-selected="false" data-tab="tarefas">Tarefas</button>
+    <button role="tab" aria-selected="false" data-tab="importar">Importar</button>
     <button role="tab" aria-selected="false" data-tab="registo">Registo</button>
   </nav>
 
@@ -76,6 +78,19 @@
         <div class="field"><label for="fMk">Aceita emails de marketing</label><select id="fMk"><option value="desconhecido">Não sabemos</option><option value="sim">Sim</option><option value="nao">Não</option><option value="pendente" disabled>À espera de confirmação</option></select></div>
       </div>
       <div class="field"><span style="font-weight:600;font-size:.9rem">Tipo</span><div class="chips" id="fTipos"></div></div>
+      <div class="grid2">
+        <div class="field"><label for="fLead">Estado</label><select id="fLead"></select></div>
+        <div class="field"><label for="fInteresse">Interesse</label><input id="fInteresse" placeholder="ex.: Grupo, Plano do 4.º Trimestre" autocomplete="off"></div>
+        <div class="field"><label for="fCanal">Como chegou</label><input id="fCanal" placeholder="ex.: Instagram, palestra, recomendação" autocomplete="off"></div>
+        <div class="field"><label for="fCidade">Cidade</label><input id="fCidade" autocomplete="off"></div>
+      </div>
+      <div class="card" style="background:var(--bg);gap:10px">
+        <div class="grid2">
+          <div class="field"><label for="fConsent">Autorizou guardar a fase da vida</label><select id="fConsent"><option value="desconhecido">Não sabemos</option><option value="sim">Sim, por escrito</option><option value="nao">Não</option></select><small>A fase (gravidez, pós-parto) é informação de saúde. Sem autorização escrita, não se guarda.</small></div>
+          <div class="field"><label for="fFase">Fase</label><select id="fFase"></select></div>
+        </div>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:.92rem"><input type="checkbox" id="fNaoContactar" style="width:auto;margin-top:.25em"> <span><strong>Não enviar ações comerciais</strong><br><span class="small" id="fNaoContactarAj"></span></span></label>
+      </div>
       <div class="field"><label for="fNotas">Notas</label><textarea id="fNotas" placeholder="Contexto comercial: como chegou, interesses, preferências de contacto. Nada sobre saúde."></textarea></div>
       <div class="row"><button class="btn" id="guardar">Guardar</button><span class="status" id="fMsg" aria-live="polite"></span></div>
     </div>
@@ -103,9 +118,80 @@
     </details>
   </section>
 
+  <section class="panel" data-panel="oportunidades" hidden>
+    <div class="row">
+      <select id="oFase" aria-label="Fase" style="flex:1 1 160px"><option value="abertas">Em aberto</option><option value="">Todas</option></select>
+      <select id="oResp" aria-label="Responsável" style="flex:1 1 160px"><option value="">Todos os responsáveis</option></select>
+      <button class="btn" id="oNova">Nova oportunidade</button>
+    </div>
+    <div class="stats" id="oStats"></div>
+    <div class="grid2" id="oLista"></div>
+  </section>
+
+  <section class="panel" id="oEditor" hidden>
+    <div class="row"><button class="btn quiet" id="oVoltar">← Oportunidades</button></div>
+    <div class="card">
+      <h2 id="oTitulo" style="margin:0">Oportunidade</h2>
+      <div class="grid2">
+        <div class="field"><label for="oEntidade">Entidade</label><input id="oEntidade" autocomplete="off"></div>
+        <div class="field"><label for="oTipo">Tipo</label><select id="oTipo"></select></div>
+        <div class="field"><label for="oProduto">Produto</label><input id="oProduto" autocomplete="off"></div>
+        <div class="field"><label for="oCodigo">Código</label><input id="oCodigo" autocomplete="off"></div>
+        <div class="field"><label for="oValor">Valor (€, sem IVA)</label><input id="oValor" inputmode="decimal" autocomplete="off"></div>
+        <div class="field"><label for="oFaseE">Fase</label><select id="oFaseE"></select></div>
+        <div class="field"><label for="oAcao">Próxima ação</label><input id="oAcao" autocomplete="off"></div>
+        <div class="field"><label for="oData">Data da próxima ação</label><input id="oData" type="date"></div>
+        <div class="field"><label for="oRespE">Responsável</label><input id="oRespE" list="listaResp" autocomplete="off"></div>
+      </div>
+      <div class="field"><label for="oNotas">Notas</label><textarea id="oNotas"></textarea></div>
+      <div class="row"><button class="btn" id="oGuardar">Guardar</button><button class="btn danger" id="oApagar">Apagar</button><span class="status" id="oMsg" aria-live="polite"></span></div>
+    </div>
+  </section>
+
   <section class="panel" data-panel="tarefas" hidden>
-    <p class="small">Tarefas por fazer de toda a equipa, pela data.</p>
+    <div class="row">
+      <select id="tEstado" aria-label="Estado" style="flex:1 1 140px"><option value="abertas">Por fazer e em curso</option><option value="todas">Todas</option></select>
+      <select id="tResp" aria-label="Responsável" style="flex:1 1 140px"><option value="">Todos os responsáveis</option></select>
+      <select id="tArea" aria-label="Área" style="flex:1 1 140px"><option value="">Todas as áreas</option></select>
+      <button class="btn" id="tNova">Nova tarefa</button>
+    </div>
+    <p class="small" id="tContagem"></p>
+    <div class="panel" style="gap:8px" id="tLista"></div>
+    <h3 style="margin:8px 0 0">Tarefas ligadas a contactos</h3>
     <div class="panel" style="gap:8px" id="tarefas"></div>
+  </section>
+
+  <section class="panel" id="tEditor" hidden>
+    <div class="row"><button class="btn quiet" id="tVoltar">← Tarefas</button></div>
+    <div class="card">
+      <h2 id="tTitulo" style="margin:0">Tarefa</h2>
+      <div class="field"><label for="tTarefa">Tarefa</label><input id="tTarefa" autocomplete="off"></div>
+      <div class="field"><label for="tDetalhe">Detalhe</label><textarea id="tDetalhe"></textarea></div>
+      <div class="grid2">
+        <div class="field"><label for="tAreaE">Área</label><select id="tAreaE"></select></div>
+        <div class="field"><label for="tRespE">Responsável</label><input id="tRespE" list="listaResp" autocomplete="off"></div>
+        <div class="field"><label for="tPrazo">Prazo</label><input id="tPrazo" type="date"></div>
+        <div class="field"><label for="tEstadoE">Estado</label><select id="tEstadoE"></select></div>
+      </div>
+      <div class="row"><button class="btn" id="tGuardar">Guardar</button><button class="btn danger" id="tApagar">Apagar</button><span class="status" id="tMsg" aria-live="polite"></span></div>
+    </div>
+  </section>
+  <datalist id="listaResp"></datalist>
+
+  <section class="panel" data-panel="importar" hidden>
+    <div class="card">
+      <h3 style="margin:0">Importar de uma folha</h3>
+      <ol class="small" style="margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:4px">
+        <li>No Google Sheets, abre o separador (Clientes, Oportunidades ou Tarefas).</li>
+        <li>Seleciona tudo, incluindo a linha dos títulos (Ctrl+A ou ⌘+A), e copia.</li>
+        <li>Escolhe aqui o tipo, cola na caixa e carrega em Importar.</li>
+      </ol>
+      <p class="small" style="margin:0">Pode repetir-se: o que já existe é atualizado, não duplicado. As clientes juntam-se pelo email, as oportunidades pela entidade e pelo produto, e as tarefas pelo id. A coluna «fase» só entra com uma coluna «consentimento_fase» a dizer Sim. A coluna «em_consulta» passa a «Não enviar ações comerciais», sem guardar o motivo, e só quando és tu a importar.</p>
+      <div class="field"><label for="impTipo">O que estás a importar</label><select id="impTipo"><option value="contactos">Clientes e contactos</option><option value="oportunidades">Oportunidades</option><option value="tarefas">Tarefas</option></select></div>
+      <textarea id="impTexto" placeholder="Cola aqui as células copiadas, ou um CSV" style="min-height:160px;font-size:.85rem"></textarea>
+      <p class="small" id="impPrevia"></p>
+      <div class="row"><button class="btn" id="impBtn" disabled>Importar</button><span class="status" id="impMsg" aria-live="polite"></span></div>
+    </div>
   </section>
 
   <section class="panel" data-panel="registo" hidden>
