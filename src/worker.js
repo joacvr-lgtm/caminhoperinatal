@@ -48,7 +48,7 @@ async function chavesAccess(env) {
   return certsCache.keys;
 }
 async function quemE(request, env) {
-  if (!env.ACCESS_TEAM_DOMAIN || !env.ACCESS_AUD) return { falha: 'O acesso ainda não está configurado (ACCESS_TEAM_DOMAIN e ACCESS_AUD).' };
+  if (!env.ACCESS_TEAM_DOMAIN) return { falha: 'O acesso ainda não está configurado (ACCESS_TEAM_DOMAIN).' };
   const token = request.headers.get('cf-access-jwt-assertion');
   if (!token) return { falha: 'Sem sessão do Cloudflare Access.' };
   const [h, p, s] = token.split('.');
@@ -62,7 +62,10 @@ async function quemE(request, env) {
     const chave = await crypto.subtle.importKey('jwk', jwk, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);
     const ok = await crypto.subtle.verify('RSASSA-PKCS1-v1_5', chave, b64url(s), new TextEncoder().encode(`${h}.${p}`));
     const aud = Array.isArray(dados.aud) ? dados.aud : [dados.aud];
-    if (!ok || !aud.includes(env.ACCESS_AUD) || dados.iss !== `https://${env.ACCESS_TEAM_DOMAIN}` || dados.exp * 1000 < Date.now()) return { falha: 'Sessão inválida ou expirada.' };
+    if (!ok || dados.iss !== `https://${env.ACCESS_TEAM_DOMAIN}` || dados.exp * 1000 < Date.now()) return { falha: 'Sessão inválida ou expirada.' };
+    /* Sem AUD configurado, a API não dá dados: só mostra, a quem já passou pelo Access, o AUD desta aplicação para o copiar. */
+    if (!env.ACCESS_AUD) return { falha: `Falta configurar o ACCESS_AUD. O desta aplicação é: ${aud.join(', ')}`, estado: 503 };
+    if (!aud.includes(env.ACCESS_AUD)) return { falha: 'Sessão inválida ou expirada.' };
     const email = String(dados.email || '').toLowerCase();
     const equipa = String(env.EQUIPA_EMAILS || '').toLowerCase().split(/[\s,;]+/).filter(Boolean);
     if (!email || (equipa.length && !equipa.includes(email))) return { falha: 'Este email não faz parte da equipa.', estado: 403 };
