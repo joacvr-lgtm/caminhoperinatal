@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-PT" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CRM · O Caminho Perinatal</title>
+<meta name="description" content="CRM da equipa do Caminho Perinatal: clientes, parceiras, convidadas, encomendas da Shopify e tarefas.">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Perinatal">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/paginas.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <a class="marca" href="./"><img src="icons/icon.svg" alt="">O Caminho</a>
+    <span class="offline" data-offline hidden>Sem rede · o CRM precisa de rede</span>
+    <div class="mods" role="navigation" aria-label="Secções">
+      <a href="caminho.html">Mapa</a>
+      <a href="psicoeducacao.html">Psicoeducação</a>
+      <a href="aldeia.html">A Aldeia</a>
+      <a href="crm.html" aria-current="page">CRM</a>
+    </div>
+  </div>
+  <header>
+    <div class="eyebrow" id="quem">Equipa</div>
+    <h1>CRM</h1>
+    <p>Clientes, subscritoras, membros da Aldeia, parceiras, convidadas e empresas, num só sítio e partilhado pela equipa.</p>
+  </header>
+
+  <div class="note risk"><strong>Aqui não entra informação clínica.</strong> Nada sobre saúde, diagnóstico, sintomas, medicação, perdas ou consultas de psicologia, mesmo que a pessoa seja também paciente. Isso fica só no Consultório.</div>
+
+  <div class="note" id="aviso" hidden></div>
+
+  <section class="card" id="sincCard" hidden>
+    <div class="row" style="justify-content:space-between">
+      <div><h3 style="margin:0">Shopify</h3><p class="small" id="sincTxt" style="margin:0"></p></div>
+      <button class="btn ghost" id="sincBtn">Atualizar da Shopify</button>
+    </div>
+  </section>
+
+  <nav role="tablist" aria-label="Secções do CRM">
+    <button role="tab" aria-selected="true" data-tab="contactos">Contactos</button>
+    <button role="tab" aria-selected="false" data-tab="tarefas">Tarefas</button>
+    <button role="tab" aria-selected="false" data-tab="registo">Registo</button>
+  </nav>
+
+  <section class="panel" data-panel="contactos">
+    <div class="stats" id="stats"></div>
+    <div class="row">
+      <input id="q" type="search" placeholder="Procurar por nome, email ou telefone" aria-label="Procurar" style="flex:2 1 220px">
+      <select id="fTipo" aria-label="Tipo" style="flex:1 1 140px"><option value="">Todos os tipos</option></select>
+      <select id="fMarca" aria-label="Marca" style="flex:1 1 140px"><option value="">Todas as marcas</option><option>Caminho Perinatal</option><option>Palavras e outras coisas</option></select>
+      <button class="btn" id="novo">Novo contacto</button>
+    </div>
+    <p class="small" id="contagem"></p>
+    <div class="grid2" id="lista"></div>
+  </section>
+
+  <section class="panel" id="ficha" hidden>
+    <div class="row"><button class="btn quiet" id="voltar">← Contactos</button></div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><h2 id="fNomeT" style="margin:0"></h2><span class="small" id="fOrigem"></span></div>
+      <div class="grid2">
+        <div class="field"><label for="fNome">Nome</label><input id="fNome" autocomplete="off"></div>
+        <div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" autocomplete="off"></div>
+        <div class="field"><label for="fTel">Telefone</label><input id="fTel" autocomplete="off"></div>
+        <div class="field"><label for="fMk">Aceita emails de marketing</label><select id="fMk"><option value="desconhecido">Não sabemos</option><option value="sim">Sim</option><option value="nao">Não</option><option value="pendente" disabled>À espera de confirmação</option></select></div>
+      </div>
+      <div class="field"><span style="font-weight:600;font-size:.9rem">Tipo</span><div class="chips" id="fTipos"></div></div>
+      <div class="field"><label for="fNotas">Notas</label><textarea id="fNotas" placeholder="Contexto comercial: como chegou, interesses, preferências de contacto. Nada sobre saúde."></textarea></div>
+      <div class="row"><button class="btn" id="guardar">Guardar</button><span class="status" id="fMsg" aria-live="polite"></span></div>
+    </div>
+    <div class="card">
+      <h3>Encomendas</h3>
+      <div id="fEnc"></div>
+    </div>
+    <div class="card">
+      <h3>Histórico e tarefas</h3>
+      <div class="row">
+        <select id="iTipo" aria-label="Tipo de registo" style="flex:0 1 150px"><option value="nota">Nota</option><option value="email">Email</option><option value="chamada">Chamada</option><option value="reuniao">Reunião</option><option value="tarefa">Tarefa</option></select>
+        <input id="iPrazo" type="date" aria-label="Prazo da tarefa" style="flex:0 1 170px" hidden>
+      </div>
+      <textarea id="iTexto" placeholder="O que aconteceu, ou o que é preciso fazer"></textarea>
+      <div class="row"><button class="btn ghost" id="iJuntar">Juntar</button><span class="status" id="iMsg" aria-live="polite"></span></div>
+      <div class="panel" style="gap:8px" id="fInt"></div>
+    </div>
+    <details>
+      <summary>Dados da pessoa (RGPD)</summary>
+      <div class="panel" style="gap:10px">
+        <p class="small">Se a pessoa pedir os seus dados, descarrega-os aqui. Se pedir para ser apagada, apaga aqui e também na Shopify (Clientes → a cliente → Apagar), senão volta a aparecer nas encomendas da loja.</p>
+        <div class="row"><button class="btn quiet" id="exportar">Descarregar os dados</button><button class="btn danger" id="apagar">Apagar contacto</button></div>
+        <p class="status" id="rMsg" aria-live="polite"></p>
+      </div>
+    </details>
+  </section>
+
+  <section class="panel" data-panel="tarefas" hidden>
+    <p class="small">Tarefas por fazer de toda a equipa, pela data.</p>
+    <div class="panel" style="gap:8px" id="tarefas"></div>
+  </section>
+
+  <section class="panel" data-panel="registo" hidden>
+    <p class="small">Quem fez o quê, para a equipa saber e para responder a perguntas sobre os dados (RGPD).</p>
+    <div class="hist"><table><thead><tr><th>Quando</th><th>Quem</th><th>O quê</th></tr></thead><tbody id="registo"></tbody></table></div>
+  </section>
+
+  <footer>O Caminho Perinatal · CRM da equipa. Os dados ficam na base de dados do Caminho, na UE, e não ficam guardados no aparelho.</footer>
+</div>
+<script src="js/crm.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

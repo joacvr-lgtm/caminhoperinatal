@@ -1,9 +1,10 @@
 /* Funcionamento offline: guarda a aplicação no aparelho na primeira visita.
    Ao mudar qualquer ficheiro, sobe a VERSAO para os aparelhos receberem a atualização. */
-const VERSAO='caminho-v2';
+const VERSAO='caminho-v3';
 const FICHEIROS=[
   './',
   'aldeia.html',
+  'crm.html',
   'caminho.html',
   'index.html',
   'kit-lancamento.html',
@@ -28,6 +29,7 @@ const FICHEIROS=[
   'icons/icon.svg',
   'js/app.js',
   'js/caminho.js',
+  'js/crm.js',
   'js/conteudos.js',
   'js/docs.js',
   'js/graficos.js',
@@ -44,6 +46,8 @@ self.addEventListener('activate',e=>{
 self.addEventListener('fetch',e=>{
   const req=e.request;if(req.method!=='GET')return;
   const url=new URL(req.url);
+  /* O CRM tem dados pessoais: nunca fica guardado no aparelho, vai sempre à rede. */
+  if(url.origin===location.origin&&url.pathname.startsWith('/api/'))return;
   if(url.origin===location.origin){
     /* Rede primeiro, para apanhar atualizações; sem rede, a cópia guardada. */
     e.respondWith(fetch(req).then(r=>{if(r.ok){const c=r.clone();caches.open(VERSAO).then(x=>x.put(req,c))}return r})

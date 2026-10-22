@@ -1,9 +1,30 @@
-// Configuração do Cloudflare Workers: publica esta pasta como site estático.
+// Configuração do Cloudflare Workers: publica a pasta public e o servidor do CRM (src/worker.js).
 {
   "name": "caminhoperinatal",
+  "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./public",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // O CRM (/api/...) passa sempre pelo servidor, que volta a verificar quem é cada pessoa.
+    "run_worker_first": ["/api/*"]
+  },
+  // Base de dados do CRM, criada no Cloudflare com a jurisdição UE (os dados ficam na União Europeia).
+  "d1_databases": [
+    { "binding": "DB", "database_name": "caminho-crm", "database_id": "POR-PREENCHER" }
+  ],
+  // Todos os dias às 4h (UTC), atualiza clientes e encomendas da Shopify.
+  "triggers": { "crons": ["17 4 * * *"] },
+  "vars": {
+    // Equipa do Cloudflare Access (Zero Trust → Settings → Custom Pages, ou o endereço do ecrã de entrada).
+    "ACCESS_TEAM_DOMAIN": "",
+    // Application Audience (AUD) Tag da aplicação caminhoperinatal, em Zero Trust → Access → Applications.
+    "ACCESS_AUD": "",
+    // Emails da equipa, separados por vírgulas. Vazio: vale só o que o Access deixar entrar.
+    "EQUIPA_EMAILS": "",
+    "SHOPIFY_LOJA": "palavraseoutrascoisas.myshopify.com",
+    "SHOPIFY_API_VERSAO": "2026-07"
+    // SHOPIFY_CLIENT_ID e SHOPIFY_CLIENT_SECRET são segredos: guardam-se em Settings → Variables and Secrets, nunca aqui.
   }
 }
