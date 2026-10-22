@@ -18,7 +18,7 @@
   "triggers": { "crons": ["17 4 * * *"] },
   "vars": {
     // Equipa do Cloudflare Access (Zero Trust → Settings → Custom Pages, ou o endereço do ecrã de entrada).
-    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_TEAM_DOMAIN": "young-wave-1a83.cloudflareaccess.com",
     // Application Audience (AUD) Tag da aplicação caminhoperinatal, em Zero Trust → Access → Applications.
     "ACCESS_AUD": "",
     // Emails da equipa, separados por vírgulas. Vazio: vale só o que o Access deixar entrar.
