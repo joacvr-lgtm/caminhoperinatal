@@ -1,0 +1,230 @@
+<!doctype html><html lang="pt-PT" data-theme="light"><head>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Perinatal"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Plano do 4.º Trimestre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: página de venda longa e calma, uma coluna de leitura com o caderno desenhado ao lado no topo; secções separadas por espaço, não por caixas. Paleta do caderno: verde-salva e ameixa. */
+:root{
+  --bg:#F3F1E6; --paper:#FBFAF4; --sage:#EEEBDD; --ink:#2B2F27; --muted:#5F6458; --line:#DED8BD;
+  --calm:#4E5C47; --calm-soft:#DDE1D3; --plum:#A14F1C; --plum-soft:#EFDCCB; --on-plum:#ffffff;
+  --display:"Lora", Georgia, "Times New Roman", serif;
+  --body:"Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) and (max-width:0px){:root:not([data-theme="light"]){
+  --bg:#1B1D18; --paper:#24271F; --sage:#1f2827; --ink:#EDEAD9; --muted:#A9A894; --line:#3A3D33;
+  --calm:#A9B79A; --calm-soft:#2A3025; --plum:#cfa6c4; --plum-soft:#35293a; --on-plum:#1b1420; color-scheme:dark}}
+:root[data-theme="nunca-escuro"]{
+  --bg:#1B1D18; --paper:#24271F; --sage:#1f2827; --ink:#EDEAD9; --muted:#A9A894; --line:#3A3D33;
+  --calm:#A9B79A; --calm-soft:#2A3025; --plum:#cfa6c4; --plum-soft:#35293a; --on-plum:#1b1420; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:17px/1.65 var(--body);padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:1040px;margin:0 auto}
+.narrow{max-width:680px}
+.eyebrow{font:600 .74rem var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--calm)}
+h1{font:400 clamp(2.6rem,7.4vw,4.6rem)/1.02 var(--display);margin:.6rem 0 0;letter-spacing:-.01em;text-wrap:balance}
+h1 em{color:var(--plum)}
+h2{font:400 clamp(2rem,5vw,2.9rem)/1.08 var(--display);margin:0;text-wrap:balance}
+h3{font:600 1.05rem/1.35 var(--body);margin:0}
+p{margin:0}
+.lead{font-size:1.15rem;color:var(--muted);max-width:52ch}
+section{padding-block:72px 0}
+.hero{display:grid;grid-template-columns:1fr;gap:40px;align-items:center;padding-top:56px}
+@media(min-width:860px){.hero{grid-template-columns:1.2fr .8fr}}
+.hero-text{display:flex;flex-direction:column;gap:22px;min-width:0}
+.cta{display:inline-flex;align-items:center;gap:12px;font:600 1.05rem var(--body);background:var(--plum);color:var(--on-plum);text-decoration:none;border-radius:999px;padding:.95rem 1.6rem;width:fit-content}
+.cta:hover{filter:brightness(1.07)}
+.cta span{font-weight:400;opacity:.85}
+.fine{font-size:.9rem;color:var(--muted)}
+/* the book */
+.book{aspect-ratio:210/297;max-width:340px;width:100%;margin:0 auto;background:var(--sage);border-radius:6px 14px 14px 6px;box-shadow:0 1px 0 var(--line),18px 24px 0 -6px var(--calm-soft);position:relative;overflow:hidden;padding:9% 10%;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--line)}
+.book .c{position:absolute;border-radius:50%;width:56%;aspect-ratio:1}
+.book .c1{background:var(--calm);opacity:.16;top:7%;right:-8%}
+.book .c2{background:var(--plum);opacity:.16;top:18%;right:12%}
+.book .c3{background:var(--calm);opacity:.28;top:12%;right:28%}
+.book small{font:600 .55rem var(--body);letter-spacing:.14em;color:var(--calm);position:absolute;top:8%;left:10%}
+.book b{font:400 clamp(1.8rem,4.6vw,2.4rem)/1 var(--display);color:#2B2F27}
+:root[data-theme="nunca-escuro"] .book b{color:var(--ink)}
+@media (prefers-color-scheme: dark) and (max-width:0px){:root:not([data-theme="light"]) .book b{color:var(--ink)}}
+.book i{font:italic .95rem/1.3 var(--display);color:var(--plum);margin-top:8px}
+.book .who{font:500 .7rem var(--body);color:var(--muted);margin-top:22%}
+/* truths */
+.truths{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-top:32px}
+.truth{border-top:2px solid var(--ink);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.truth b{font:400 1.5rem/1.15 var(--display)}
+.truth p{color:var(--muted);font-size:.98rem}
+/* conversations */
+.convs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:32px}
+.conv{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.num{font:400 3rem/1 var(--display);color:var(--calm)}
+.conv:nth-child(2) .num{color:var(--plum)}
+.conv .when{font:600 .72rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.conv ul{margin:0;padding-left:1.1rem;color:var(--muted);font-size:.96rem}
+/* inside */
+.inside{display:grid;grid-template-columns:1fr;gap:0;margin-top:28px;border-top:1px solid var(--line)}
+.row-i{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.row-i .k{font:400 1.9rem/1 var(--display);color:var(--calm);font-variant-numeric:tabular-nums}
+.row-i h3+p{color:var(--muted);font-size:.96rem;margin-top:2px}
+@media(max-width:520px){.row-i{grid-template-columns:72px 1fr;gap:12px}.row-i .k{font-size:1.5rem}}
+/* for whom */
+.who2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px}
+.who2 div{border-radius:16px;padding:22px}
+.yes{background:var(--calm-soft)}
+.no{background:var(--sage)}
+.who2 ul{margin:10px 0 0;padding-left:1.1rem;display:flex;flex-direction:column;gap:6px}
+/* about */
+.about{display:grid;grid-template-columns:1fr;gap:28px;align-items:start}
+@media(min-width:760px){.about{grid-template-columns:200px 1fr}}
+.mono{width:160px;aspect-ratio:1;border-radius:50%;background:var(--plum-soft);display:grid;place-items:center;font:italic 3.6rem var(--display);color:var(--plum)}
+.about .txt{display:flex;flex-direction:column;gap:14px}
+/* price */
+.price{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:36px clamp(20px,5vw,48px);display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:760px){.price{grid-template-columns:1fr 1fr;align-items:center}}
+.amount{font:400 5rem/1 var(--display);font-variant-numeric:tabular-nums}
+.amount small{font:500 1rem var(--body);color:var(--muted);margin-left:6px}
+.launch{background:var(--plum-soft);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.price ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:6px}
+/* faq */
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font:600 1.02rem var(--body);list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::after{content:"+";font:400 1.5rem/1 var(--display);color:var(--calm)}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin-top:10px;max-width:62ch}
+.quote{font:italic clamp(1.5rem,3.6vw,2.1rem)/1.3 var(--display);color:var(--plum);max-width:30ch}
+footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:8px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--plum);outline-offset:3px}
+
+/* Aspeto do caderno (PDF): Lora + Poppins, creme claro, banda de cor */
+body{font-weight:300}
+b,strong,h3,th,.tab,.btn,.chip,.tag,.eyebrow{font-weight:500}
+.eyebrow{color:var(--accent)!important;letter-spacing:.14em}
+h1,h2{color:var(--calm)}
+h1 em{color:var(--accent)}
+.wrap::before{content:"";display:block;height:6px;border-radius:3px;margin-bottom:6px;background:linear-gradient(90deg,var(--calm) 0 68%,var(--accent) 68% 84%,#D3A136 84% 100%)}
+:root{color-scheme:light}
+</style>
+<style>.app-volta{max-width:1040px;margin:0 auto 10px;font:500 .85rem "Poppins",system-ui,sans-serif}.app-volta a{color:#4E5C47;text-decoration:none}</style>
+<nav class="app-volta" aria-label="Aplicação"><a href="./">← Perinatal</a></nav>
+
+<main class="wrap">
+
+  <section class="hero" aria-label="Apresentação">
+    <div class="hero-text">
+      <div class="eyebrow">Para casais entre as 28 e as 34 semanas</div>
+      <h1>Preparem o quarto. E preparem também <em>as primeiras 12 semanas.</em></h1>
+      <p class="lead">Um caderno com três conversas a dois para chegarem ao pós-parto com um plano para a rede de apoio, as tarefas, as noites, as visitas e o vosso casal.</p>
+      <a class="cta" href="#comprar">Quero o plano <span>19 €</span></a>
+      <p class="fine">Caderno PDF preenchível e três áudios. Acesso imediato depois da compra.</p>
+    </div>
+    <div class="book" aria-hidden="true">
+      <span class="c c1"></span><span class="c c2"></span><span class="c c3"></span>
+      <small>CADERNO PARA O CASAL</small>
+      <b>Plano do<br>4.º Trimestre</b>
+      <i>Três conversas a dois para preparar as primeiras 12 semanas com o bebé.</i>
+      <span class="who">Joana Carvalho · Psicóloga perinatal</span>
+    </div>
+  </section>
+
+  <section class="narrow" aria-labelledby="t-verdade">
+    <div class="eyebrow">O que quase ninguém prepara</div>
+    <h2 id="t-verdade" style="margin-top:10px">O bebé chega, e as decisões difíceis chegam com ele, às três da manhã.</h2>
+    <div class="truths">
+      <div class="truth"><b>As noites</b><p>Um recém-nascido acorda de poucas em poucas horas. Sem um plano, os dois ficam acordados e ninguém descansa.</p></div>
+      <div class="truth"><b>Quem faz o quê</b><p>Refeições, roupa, irmãos, papéis. O que não foi combinado antes acaba discutido quando já não há paciência.</p></div>
+      <div class="truth"><b>As visitas</b><p>Toda a gente quer conhecer o bebé, e todos têm conselhos. Dizer que não, cansados e à porta, é difícil.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-conv">
+    <div class="narrow">
+      <div class="eyebrow">Como funciona</div>
+      <h2 id="t-conv" style="margin-top:10px">Três conversas de 45 minutos</h2>
+      <p class="lead" style="margin-top:12px">Cada conversa começa com um áudio curto e segue no caderno, com perguntas, tabelas e espaços para escreverem as vossas decisões.</p>
+    </div>
+    <div class="convs">
+      <article class="conv"><span class="num">1</span><h3>Imaginar</h3><span class="when">28 semanas</span><ul><li>O que é, afinal, o 4.º trimestre</li><li>O que cada um imagina, espera e receia</li><li>O que querem trazer, ou deixar, das vossas famílias</li></ul></article>
+      <article class="conv"><span class="num">2</span><h3>Organizar</h3><span class="when">30 a 32 semanas</span><ul><li>A vossa rede de apoio, com nomes e pedidos concretos</li><li>Quem faz o quê, incluindo a carga mental</li><li>Plano das noites, alimentação e regras para as visitas</li></ul></article>
+      <article class="conv"><span class="num">3</span><h3>Cuidar</h3><span class="when">33 a 34 semanas</span><ul><li>Recuperação do parto e sinais de alerta</li><li>O vosso plano se um de vocês não estiver bem</li><li>Um check-in semanal de casal que cabe em 10 minutos</li></ul></article>
+    </div>
+  </section>
+
+  <section class="narrow" aria-labelledby="t-inside">
+    <div class="eyebrow">O que recebem</div>
+    <h2 id="t-inside" style="margin-top:10px">Tudo o que precisam para as três conversas</h2>
+    <div class="inside">
+      <div class="row-i"><span class="k">13</span><div><h3>Páginas de caderno preenchível</h3><p>Escrevem diretamente no PDF, no computador ou no tablet, ou imprimem e usam à mão.</p></div></div>
+      <div class="row-i"><span class="k">3</span><div><h3>Áudios de 5 minutos</h3><p>Um para abrir cada conversa, para entrarem no tema com calma e sem pressa.</p></div></div>
+      <div class="row-i"><span class="k">1</span><div><h3>Página para o frigorífico</h3><p>Contactos importantes, o vosso plano das noites e os sinais de alerta, num só sítio.</p></div></div>
+      <div class="row-i"><span class="k">+</span><div><h3>Frases prontas para as visitas</h3><p>Para a família, para a porta e para os conselhos que ninguém pediu.</p></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-quem">
+    <div class="narrow"><div class="eyebrow">Para quem é</div><h2 id="t-quem" style="margin-top:10px">Feito para casais que querem chegar preparados</h2></div>
+    <div class="who2">
+      <div class="yes"><h3>É para vocês se</h3><ul><li>Estão entre as 28 e as 34 semanas, do primeiro filho ou de outro</li><li>Querem dividir o cuidado de forma justa desde o início</li><li>Têm pouca rede de apoio e querem aproveitar bem a que têm</li><li>Preferem conversar antes a discutir depois</li></ul></div>
+      <div class="no"><h3>Não é</h3><ul><li>Um curso de preparação para o parto</li><li>Um guia de cuidados ao recém-nascido</li><li>Acompanhamento psicológico: se estiverem a passar por um momento difícil, procurem uma psicóloga ou o vosso médico</li></ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-eu">
+    <div class="about">
+      <div class="mono" aria-hidden="true">J</div>
+      <div class="txt narrow">
+        <div class="eyebrow">Quem escreveu</div>
+        <h2 id="t-eu">Olá, sou a Joana.</h2>
+        <p>Sou psicóloga, especializada em saúde mental perinatal e parentalidade consciente, e mãe de três. Acompanho mulheres e casais na gravidez e no pós-parto, em consulta, em grupo e em caminhadas com mães e bebés.</p>
+        <p>Escrevi este caderno porque vejo, todas as semanas, como as primeiras semanas correm melhor para quem as conversou antes. Não precisam de ter tudo resolvido. Precisam de ter falado sobre o que importa.</p>
+        <p class="quote">"O plano não é uma promessa. É a conversa que tiveram para chegar lá juntos."</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comprar" aria-labelledby="t-preco">
+    <div class="price">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="eyebrow">Plano do 4.º Trimestre</div>
+        <h2 id="t-preco">Três conversas que valem por muitas noites.</h2>
+        <div class="amount">19 €<small>IVA incluído</small></div>
+        <p class="launch"><b>Lista de espera:</b> quem se inscreve recebe as frases para as visitas, grátis, e acesso ao preço de lançamento de 15 € durante 72 horas.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <ul><li>Caderno PDF de 13 páginas, preenchível</li><li>Três áudios de 5 minutos</li><li>Página para o frigorífico</li><li>Frases prontas para as visitas</li><li>Acesso imediato e para sempre</li></ul>
+        <a class="cta" href="#comprar">Quero o plano <span>19 €</span></a>
+        <p class="fine">Pagamento seguro. Recebem o caderno e os áudios por email logo a seguir.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="narrow" aria-labelledby="t-faq">
+    <div class="eyebrow">Perguntas frequentes</div>
+    <h2 id="t-faq" style="margin-top:10px;margin-bottom:12px">Antes de decidirem</h2>
+    <details><summary>Já temos o bebé. Ainda serve?</summary><p>Foi pensado para a gravidez, mas muitas partes servem nas primeiras semanas: a rede de apoio, quem faz o quê, as noites e o check-in de casal. Usem o que fizer sentido para a vossa fase.</p></details>
+    <details><summary>E se for mãe ou pai a solo?</summary><p>Façam o caderno com a pessoa que mais vai estar presente nas primeiras semanas: a vossa mãe, uma irmã, uma amiga. As conversas funcionam da mesma forma.</p></details>
+    <details><summary>Quanto tempo leva?</summary><p>Três conversas de cerca de 45 minutos, espaçadas ao longo de algumas semanas. Podem fazê-las mais depressa, se o parto estiver perto.</p></details>
+    <details><summary>Preciso de imprimir?</summary><p>Não. O PDF é preenchível: escrevem diretamente no computador ou no tablet. Se preferirem papel, imprimem e escrevem à mão.</p></details>
+    <details><summary>Isto substitui acompanhamento psicológico?</summary><p>Não. É um recurso de promoção do bem-estar. Inclui os sinais de alerta e onde pedir ajuda, mas se a gravidez ou o pós-parto estiverem a ser difíceis, o caminho é falar com uma psicóloga ou com o vosso médico.</p></details>
+    <details><summary>Já fizemos um curso de preparação para o parto. Não é a mesma coisa?</summary><p>Os cursos preparam o parto e os cuidados ao bebé. Este caderno prepara o que vem depois para vocês dois: a organização, o descanso, as visitas e a relação.</p></details>
+  </section>
+
+  <section class="narrow" style="text-align:left" aria-label="Convite final">
+    <h2>Quando o bebé chegar, já terão conversado sobre o que importa.</h2>
+    <p class="lead" style="margin-top:14px;margin-bottom:22px">E isso deixa mais espaço para o resto: para conhecer o vosso filho.</p>
+    <a class="cta" href="#comprar">Quero o plano <span>19 €</span></a>
+  </section>
+
+  <footer>
+    <span>Joana Carvalho · Psicóloga perinatal · @acarlabairro no Instagram</span>
+    <span>Este caderno é um recurso de promoção do bem-estar e não substitui acompanhamento psicológico ou médico. Em urgência: 112 ou SNS 24 (808 24 24 24).</span>
+  </footer>
+</main>
+
+
+<script src="js/app.js"></script>
+</body></html>

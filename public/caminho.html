@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-PT" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>O Caminho Perinatal</title>
+<meta name="description" content="Mapa de trabalho: da doença perinatal à saúde perinatal, no tempo e nos níveis de cuidado.">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Perinatal">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/caminho.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <a class="marca" href="./"><img src="icons/icon.svg" alt="">O Caminho</a>
+    <span class="offline" data-offline hidden>Sem rede · a funcionar offline</span>
+    <div class="mods" role="navigation" aria-label="Secções">
+      <a href="caminho.html" aria-current="page">Mapa</a>
+      <a href="psicoeducacao.html">Psicoeducação</a>
+      <a href="aldeia.html">A Aldeia</a>
+    </div>
+  </div>
+  <header>
+    <div class="eyebrow">Mapa de trabalho · Joana Carvalho, psicóloga perinatal</div>
+    <h1>Da doença perinatal à <em>saúde perinatal</em></h1>
+    <p class="lead" style="margin-top:.5rem"><a href="psicoeducacao.html">Psicoeducação</a> · <a href="aldeia.html">A Aldeia</a> · <a href="plano-negocio-2027.html">Plano de Negócio 2027</a></p>
+    <p class="lead">A doença e a saúde mental não são as duas pontas de uma linha: são dois eixos diferentes. Este mapa percorre o tempo perinatal, do desejo de ter um filho aos dois anos do bebé, e os níveis em que se cuida, da mulher ao sistema. O que é cheio já existe; o que é tracejado está por criar. Cada elemento diz quem o paga e, quando já tem data, o mês em que nasce.</p>
+  </header>
+
+  <section class="eixos" aria-label="Os dois contínuos">
+    <div class="eixo"><span class="eyebrow">Eixo da doença</span><b>Ver, tratar, proteger</b><p>Rastrear, avaliar, intervir e prevenir. O que a psicologia perinatal clínica sempre fez, e continua a ser preciso.</p></div>
+    <div class="eixo"><span class="eyebrow">Eixo da saúde</span><b>Florescer, pertencer, crescer</b><p>Cultivar ligação, sentido, corpo e comunidade. O que faz uma família passar de "sem doença" a "a viver bem".</p></div>
+  </section>
+
+  <section aria-label="Próximas três criações">
+    <div class="eyebrow" style="margin-bottom:10px">Próximas três criações</div>
+    <div class="prox" id="prox"></div>
+  </section>
+
+  <div class="legend">
+    <span class="key"><span class="sw tem"></span>Já existe · <span class="count" id="nTem"></span></span>
+    <span class="key"><span class="sw criar"></span>Por criar · <span class="count" id="nCriar"></span></span>
+    <span class="key"><span class="sw criar" style="border-style:solid;border-width:2px;background:var(--mostarda-soft)"></span>Próximas três</span>
+    <span>Toca num elemento para ver o detalhe.</span>
+  </div>
+
+  <div class="filtros" id="filtros" role="group" aria-label="Filtrar por quem paga"></div>
+
+  <div class="mapwrap"><table id="mapa" aria-label="Mapa do caminho perinatal"></table></div>
+
+  <section class="det" id="det" aria-live="polite"></section>
+
+  <section aria-label="Modos de cuidar">
+    <div class="eyebrow" style="margin-bottom:10px">Os modos de cuidar que atravessam o mapa</div>
+    <div class="modos">
+      <div class="modo"><b>Ver</b><p>Rastrear e tratar o que dói.</p></div>
+      <div class="modo"><b>Proteger</b><p>Antecipar e preparar.</p></div>
+      <div class="modo"><b>Reparar</b><p>Elaborar partos difíceis e perdas.</p></div>
+      <div class="modo"><b>Florescer</b><p>Cultivar o que faz bem.</p></div>
+      <div class="modo"><b>Pertencer</b><p>Não fazer o caminho sozinha.</p></div>
+      <div class="modo"><b>Dar</b><p>Quem fez o caminho apoia quem chega.</p></div>
+      <div class="modo"><b>Cuidar de quem cuida</b><p>Os profissionais também fazem o caminho.</p></div>
+    </div>
+  </section>
+
+  <p class="src">Base teórica: modelo dos dois contínuos da saúde mental (Corey Keyes, 2002) e a escala breve de florescer MHC-SF do mesmo autor; salutogénese (Aaron Antonovsky); conceito dos primeiros 1000 dias em saúde pública. Datas e linhas de faturação segundo o Plano de Negócio 2027. Mapa de trabalho em construção.</p>
+</div>
+
+<script src="js/ligacoes.js"></script>
+<script src="js/caminho.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-PT" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Aldeia · O Caminho Perinatal</title>
+<meta name="description" content="A Aldeia: especialistas convidados, tema do mês e modelos para conduzir a comunidade.">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Perinatal">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/paginas.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <a class="marca" href="./"><img src="icons/icon.svg" alt="">O Caminho</a>
+    <span class="offline" data-offline hidden>Sem rede · a funcionar offline</span>
+    <div class="mods" role="navigation" aria-label="Secções">
+      <a href="caminho.html">Mapa</a>
+      <a href="psicoeducacao.html">Psicoeducação</a>
+      <a href="aldeia.html" aria-current="page">A Aldeia</a>
+    </div>
+  </div>
+<section class="panel" data-panel="aldeia">
+    <div><div class="eyebrow">Comunidade por subscrição · 9 €/mês</div><h2>Especialistas convidados</h2></div>
+    <p class="lead">Um convidado por mês, de março a dezembro de 2027, com pausa em julho e agosto. Primeiro quem dá credibilidade, depois quem resolve as dúvidas práticas, por fim os temas que mais ninguém trata.</p>
+    <div class="stats" id="alStats"></div>
+    <div class="note calm">Para conduzir a Aldeia: guião do círculo mensal, regras do grupo, protocolo de crise na comunidade e encaminhamento para consulta, <a href="#modelos">mais abaixo</a>. Cada convidado tem o tema do mês pronto a copiar.</div>
+    <div class="card">
+      <h3>Calendário de convidados</h3>
+      <p class="small">Atualiza o estado à medida que avanças. Fica guardado só neste navegador.</p>
+      <div class="panel" style="gap:10px" id="alLista"></div>
+    </div>
+    <div class="card">
+      <h3>Reserva</h3>
+      <p class="small">Para substituir uma desistência ou abrir uma segunda sessão num mês forte.</p>
+      <div class="panel" style="gap:10px" id="alReserva"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Regras para todas as sessões</h3>
+        <ul style="margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:6px">
+          <li>Formato: 45 minutos de conversa e 15 de perguntas, em direto e gravado para os membros.</li>
+          <li>É psicoeducação em grupo, não consulta. Ninguém fala do seu caso em detalhe na sessão.</li>
+          <li>Quem precisar de mais é encaminhado para consulta individual, tua ou de outro profissional.</li>
+          <li>Pedir sempre autorização escrita para gravar e para usar imagem e nome na divulgação.</li>
+          <li>Sem venda direta do convidado durante a sessão; um link no fim é suficiente.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Quanto pagar</h3>
+        <p>Com 40 membros, a Aldeia rende cerca de 360 €/mês. Cachet de 100 a 150 € por sessão.</p>
+        <p class="small">Se o orçamento não chegar, troca parte do cachet por divulgação no @acarlabairro e na lista de emails. Para quem está na academia, a visibilidade junto de mães e profissionais pesa muitas vezes tanto como o valor.</p>
+      </div>
+    </div>
+    <details>
+      <summary>Convite a enviar</summary>
+      <div class="panel" style="gap:10px"><div class="doc" id="alConvite"></div><div class="row"><button class="btn ghost" data-copy="alConvite">Copiar texto</button><span class="status" id="alConvitem"></span></div></div>
+    </details>
+    <div id="modelos" class="panel" style="gap:10px">
+      <h3>Para conduzir a Aldeia</h3>
+      <p class="small">Substitui o que está entre parênteses retos. Revê os modelos com a tua orientadora e à luz do Código Deontológico da OPP antes de os usares.</p>
+      <div class="panel" id="modelosLista"></div>
+    </div>
+  </section>
+  <footer>O Caminho Perinatal · Joana Carvalho, psicóloga perinatal.</footer>
+</div>
+<script src="js/conteudos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

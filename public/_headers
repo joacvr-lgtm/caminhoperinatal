@@ -1,0 +1,11 @@
+# Cabeçalhos para o Cloudflare Pages (e Netlify).
+/*
+  X-Robots-Tag: noindex, nofollow
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# O service worker tem de ser sempre verificado, para as atualizações chegarem aos aparelhos.
+/sw.js
+  Cache-Control: no-cache

@@ -1,0 +1,54 @@
+/* Documentos (antigos Claude Docs): coluna de leitura larga, tabelas que deslizam no telemóvel, listas de tarefas que se marcam e versão para imprimir. */
+*{box-sizing:border-box}
+body{padding-inline:16px;padding-block:24px 56px;font-weight:300}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,4vw,36px);line-height:1.65}
+.doc h1{font:400 clamp(2rem,6vw,2.8rem)/1.08 var(--display);margin:0 0 .6rem;text-wrap:balance}
+.doc h2{font:400 1.65rem/1.15 var(--display);margin:2.2rem 0 .6rem;padding-top:1rem;border-top:1px solid var(--line)}
+.doc h3{font:500 1.05rem var(--body);color:var(--ferrugem);margin:1.6rem 0 .4rem}
+.doc p{margin:.6rem 0;max-width:72ch}
+.doc strong{font-weight:600}
+.doc em{color:var(--muted)}
+.doc a{color:var(--ferrugem)}
+.doc ul,.doc ol{padding-left:1.25rem;display:flex;flex-direction:column;gap:5px;max-width:72ch}
+.doc blockquote{margin:.8rem 0;padding:.7rem 1rem;background:var(--calm-soft);border-left:4px solid var(--verde);border-radius:0 10px 10px 0}
+.doc blockquote p{margin:0}
+.doc hr{border:0;border-top:1px solid var(--line);margin:1.6rem 0}
+.tw{overflow-x:auto;margin:.8rem 0}
+.doc table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:520px}
+.doc th,.doc td{text-align:left;vertical-align:top;padding:8px 10px;border:1px solid var(--line)}
+.doc th{background:var(--calm-soft);color:var(--verde);font-weight:600;font-size:.82rem}
+.doc td:empty::after{content:"\00a0";display:inline-block;min-width:4ch}
+li.tarefa{list-style:none;margin-left:-1.25rem}
+li.tarefa label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+li.tarefa input{margin-top:.35em;width:1.05em;height:1.05em;accent-color:var(--verde);flex:0 0 auto}
+li.tarefa input:checked+span,li.tarefa label:has(input:checked){color:var(--muted);text-decoration:line-through}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font:500 .92rem var(--body);border-radius:10px;padding:.6rem 1rem;cursor:pointer}
+.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+@media print{
+  body::before,.appbar,.row{display:none!important}
+  body{padding:0;background:#fff}
+  .doc{border:0;padding:0}
+  .doc h2{break-after:avoid}
+  .tw{overflow:visible}
+  .doc table{min-width:0}
+  tr,li{break-inside:avoid}
+}
+
+/* Gráficos interativos e caderno em PDF */
+.grafico{margin:1rem 0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px}
+.g-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.grafico svg{display:block;width:100%;min-width:600px;height:auto}
+.g-dica{margin:.3rem 4px 0;font-size:.78rem;color:var(--muted);font-style:italic}
+.grafico .g-info{margin:.4rem 4px 0;font-size:.88rem;color:var(--muted);min-height:1.4em}
+.g-linha,.g-mes,.g-leg{cursor:pointer;outline:none}
+.g-linha.ativo>rect:first-child{fill:#F6EACB}
+.g-linha:focus-visible>rect:first-child,.g-mes:focus-visible>rect:first-child,.g-leg:focus-visible>rect:first-child{stroke:var(--ferrugem);stroke-width:1.5}
+.caderno{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:1rem 0}
+.caderno img{width:160px;height:auto;border-radius:6px;box-shadow:0 2px 10px rgba(38,43,34,.18)}
+.caderno figcaption{font-size:.9rem;color:var(--muted);display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.caderno .btn{background:var(--verde);color:var(--paper);text-decoration:none;display:inline-block}
+.caderno .btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.nota-pdf{background:var(--mostarda-soft);border-radius:10px;padding:.6rem .9rem;font-size:.92rem}
+@media print{.grafico{border:0;padding:0}.g-scroll{overflow:visible}.grafico svg{min-width:0}.g-info,.g-dica{display:none}}

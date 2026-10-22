@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-PT" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>O Caminho Perinatal</title>
+<meta name="description" content="O Caminho Perinatal: o mapa, a psicoeducação, A Aldeia, os produtos e o negócio.">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Caminho">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<style>
+/* Ecrã inicial: duas portas grandes, uma por módulo, e a instalação logo abaixo. */
+*{box-sizing:border-box}
+body{padding-inline:16px;padding-block:24px 56px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.eyebrow{font:600 .72rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font:400 clamp(2.4rem,9vw,3.6rem)/1.02 var(--display);margin:.3rem 0 0;text-wrap:balance}
+h1 em{color:var(--accent)}
+.lead{color:var(--muted);max-width:60ch;margin:.7rem 0 0}
+.portas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.porta{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px}
+.porta:hover{border-color:var(--accent)}
+.porta strong{font:400 1.9rem/1.05 var(--display);color:var(--verde)}
+.porta span{color:var(--muted);font-size:.95rem}
+.porta ul{margin:4px 0 0;padding-left:1.1rem;color:var(--muted);font-size:.88rem}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.card h2{font:600 1rem var(--body);margin:0}
+.card p{margin:0;font-size:.92rem}
+.note{background:var(--risk-soft);border-radius:12px;padding:.8rem 1rem;font-size:.9rem}
+.btn{font:600 .92rem var(--body);background:var(--verde);color:var(--paper);border:0;border-radius:10px;padding:.62rem 1.05rem;cursor:pointer;align-self:flex-start}
+.small{font-size:.85rem;color:var(--muted)}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+footer{font-size:.8rem;color:var(--muted);text-align:center}
+.biblioteca{display:flex;flex-direction:column;gap:6px}
+.biblioteca h2{font:400 1.8rem/1.1 var(--display);margin:0}
+.grupos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:8px}
+.grupo{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.grupo h3{font:500 .78rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--verde);margin:0 0 6px}
+.grupo ul+h3{margin-top:14px}
+.grupo ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+.grupo a{color:var(--ink);text-decoration-color:var(--bege);text-underline-offset:3px}
+.grupo a:hover{color:var(--ferrugem)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <a class="marca" href="./"><img src="icons/icon.svg" alt="">O Caminho</a>
+    <span class="offline" data-offline hidden>Sem rede · a funcionar offline</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Joana Carvalho · psicóloga perinatal</div>
+    <h1>O <em>caminho</em> que estás a construir</h1>
+    <p class="lead">Da doença à saúde perinatal: o mapa, a psicoeducação, A Aldeia, os produtos para as famílias e o negócio. Funciona no telemóvel e no computador, mesmo sem rede.</p>
+  </header>
+
+  <div class="portas">
+    <a class="porta" href="caminho.html">
+      <div class="eyebrow">Visão</div>
+      <strong>O mapa</strong>
+      <span>O que já existe e o que está por criar, no tempo e nos níveis de cuidado.</span>
+    </a>
+    <a class="porta" href="psicoeducacao.html">
+      <div class="eyebrow">Para as famílias</div>
+      <strong>Psicoeducação</strong>
+      <span>Florescer, Cuidar e a Roda da Saúde Perinatal, área a área, prontos a copiar.</span>
+    </a>
+    <a class="porta" href="aldeia.html">
+      <div class="eyebrow">Comunidade</div>
+      <strong>A Aldeia</strong>
+      <span>Especialistas convidados, tema do mês e os modelos para conduzir o grupo.</span>
+    </a>
+  </div>
+
+  <section class="biblioteca" aria-labelledby="bib-t">
+    <div class="eyebrow">Tudo dentro da aplicação</div>
+    <h2 id="bib-t">Biblioteca</h2>
+    <div class="grupos">
+      <div class="grupo"><h3>Para as famílias</h3><ul>
+        <li><a href="roda.html">Roda da Saúde Perinatal</a></li>
+        <li><a href="plano-4-trimestre.html">Plano do 4.º Trimestre</a></li>
+        <li><a href="regresso-trabalho.html">Guia do Regresso ao Trabalho</a></li>
+      </ul>
+      <h3>Prática</h3><ul>
+        <li><a href="narrativa-parto.html">Guião da Narrativa do Parto</a></li>
+      </ul></div>
+      <div class="grupo"><h3>Negócio</h3><ul>
+        <li><a href="plano-negocio-2027.html">Plano de Negócio 2027</a></li>
+        <li><a href="plano-4-trimestre-venda.html">Página de vendas do Plano do 4.º Trimestre</a></li>
+        <li><a href="kit-lancamento.html">Kit de lançamento do Plano do 4.º Trimestre</a></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <div class="note"><strong>Só para ti:</strong> esta aplicação é o teu negócio e não é partilhável. Os estados da Aldeia e as listas de tarefas ficam guardados só neste aparelho. O Consultório Perinatal é uma aplicação à parte.</div>
+
+  <section class="card" data-instalar-dica>
+    <h2>Instalar no telemóvel ou no computador</h2>
+    <button class="btn" data-instalar hidden>Instalar a aplicação</button>
+    <p><strong>Android e Chrome:</strong> menu ⋮ → <em>Instalar aplicação</em> (ou o botão acima, quando aparecer).</p>
+    <p><strong>iPhone e iPad:</strong> no Safari, botão Partilhar → <em>Adicionar ao ecrã principal</em>.</p>
+  </section>
+
+  <footer>O Caminho Perinatal · Joana Carvalho, psicóloga perinatal.</footer>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

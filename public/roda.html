@@ -1,0 +1,208 @@
+<!doctype html><html lang="pt-PT" data-theme="light"><head>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Perinatal"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Roda da Saúde Perinatal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: uma roda viva no topo que cresce à medida que a pessoa avalia cada área; por baixo, as oito áreas como cartões e, no fim, um plano de um só passo. Mesma família visual do Consultório Perinatal. */
+:root{
+  --bg:#F3F1E6; --paper:#FBFAF4; --ink:#2B2F27; --muted:#5F6458; --line:#DED8BD;
+  --accent:#A14F1C; --accent-soft:#EFDCCB; --calm:#4E5C47; --calm-soft:#DDE1D3; --wheel:#4E5C47; --wheel-fill:rgba(78,92,71,.22);
+  --display:"Lora", Georgia, "Times New Roman", serif;
+  --body:"Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) and (max-width:0px){:root:not([data-theme="light"]){
+  --bg:#1B1D18; --paper:#24271F; --ink:#EDEAD9; --muted:#A9A894; --line:#3A3D33;
+  --accent:#D98A5A; --accent-soft:#3B2719; --calm:#A9B79A; --calm-soft:#2A3025; --wheel:#A9B79A; --wheel-fill:rgba(140,194,182,.25); color-scheme:dark}}
+:root[data-theme="nunca-escuro"]{
+  --bg:#1B1D18; --paper:#24271F; --ink:#EDEAD9; --muted:#A9A894; --line:#3A3D33;
+  --accent:#D98A5A; --accent-soft:#3B2719; --calm:#A9B79A; --calm-soft:#2A3025; --wheel:#A9B79A; --wheel-fill:rgba(140,194,182,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-inline:16px;padding-block:24px 56px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.eyebrow{font:600 .72rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--calm)}
+h1{font:400 clamp(2.4rem,9vw,3.4rem)/1 var(--display);margin:.3rem 0 0}
+h1 em{color:var(--accent)}
+h2{font:400 1.8rem/1.1 var(--display);margin:0;text-wrap:balance}
+h3{font:600 1.05rem var(--body);margin:0}
+p{margin:0}
+.lead{color:var(--muted);max-width:60ch}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hero{display:grid;grid-template-columns:1fr;gap:18px;align-items:center}
+@media (min-width:680px){.hero{grid-template-columns:1.1fr 1fr}}
+svg text{font-family:var(--body)}
+.centro{font:italic 1.2rem/1.4 var(--display);color:var(--accent)}
+.areas{display:flex;flex-direction:column;gap:12px}
+.area{border-left:4px solid var(--line)}
+.area.focus{border-left-color:var(--accent)}
+.area-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.area-top h3 span{color:var(--muted);font-weight:500;font-size:.85rem;margin-left:6px}
+.score{font:400 2rem/1 var(--display);color:var(--calm);font-variant-numeric:tabular-nums;min-width:2.2ch;text-align:right}
+.inclui{color:var(--muted);font-size:.92rem}
+input[type=range]{width:100%;accent-color:var(--calm)}
+.scale-l{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted)}
+details summary{cursor:pointer;font-weight:600;font-size:.92rem;color:var(--accent)}
+details[open] summary{margin-bottom:8px}
+.sub{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.sub b{font:600 .7rem var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--calm)}
+ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:3px}
+.btn{font:600 .92rem var(--body);background:var(--accent);color:var(--paper);border:0;border-radius:10px;padding:.65rem 1.1rem;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.small{padding:.4rem .8rem;font-size:.85rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-weight:600;font-size:.92rem}
+textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:.6rem .7rem;width:100%}
+textarea{min-height:64px;resize:vertical}
+.status{font-size:.86rem;color:var(--calm);min-height:1.2em}
+.note{background:var(--calm-soft);border-radius:10px;padding:.75rem 1rem;font-size:.92rem}
+.src{font-size:.8rem;color:var(--muted);text-align:center;max-width:62ch;margin:0 auto}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Aspeto do caderno (PDF): Lora + Poppins, creme claro, banda de cor */
+body{font-weight:300}
+b,strong,h3,th,.tab,.btn,.chip,.tag,.eyebrow{font-weight:500}
+.eyebrow{color:var(--accent)!important;letter-spacing:.14em}
+h1,h2{color:var(--calm)}
+h1 em{color:var(--accent)}
+.wrap::before{content:"";display:block;height:6px;border-radius:3px;margin-bottom:6px;background:linear-gradient(90deg,var(--calm) 0 68%,var(--accent) 68% 84%,#D3A136 84% 100%)}
+:root{color-scheme:light}
+</style>
+<style>.app-volta{max-width:1040px;margin:0 auto 10px;font:500 .85rem "Poppins",system-ui,sans-serif}.app-volta a{color:#4E5C47;text-decoration:none}</style>
+<nav class="app-volta" aria-label="Aplicação"><a href="./">← Perinatal</a></nav>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Bem-estar na gravidez e no pós-parto</div>
+    <h1>Roda da Saúde <em>Perinatal</em></h1>
+    <p class="lead" style="margin-top:.6rem">Oito áreas que, juntas, sustentam a tua saúde nesta fase. Não é um teste: é um mapa para escolheres onde pôr um pouco de atenção esta semana.</p>
+  </header>
+
+  <section class="card hero">
+    <div id="roda" aria-live="polite"></div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+      <div class="eyebrow">No centro, tu</div>
+      <p class="centro">"O que é mais importante para mim, agora, nesta fase?"</p>
+      <p class="lead">A roda começa na atenção: parar, reparar como estás e escolher com intenção. Avalia cada área de 1 a 10 e a roda vai ganhando forma. As áreas mais curtas são convites, não falhas.</p>
+      <p class="note" style="font-size:.9rem"><strong>Isto não é mais uma tarefa.</strong> Uma área baixa é informação, não falha. Escolhe no máximo uma por semana, ou nenhuma: descansar também é um plano. E façam-na a dois, para a carga não ficar só contigo.</p>
+      <p class="small" id="media" style="color:var(--muted);font-size:.9rem"></p>
+    </div>
+  </section>
+
+  <section class="areas" id="areas"></section>
+
+  <section class="card" id="plano">
+    <div class="eyebrow">Um passo de cada vez</div>
+    <h2>O meu plano para esta semana</h2>
+    <p class="lead">Escolhe uma só área, a que te dá mais vontade e não necessariamente a mais baixa. Se esta semana não há espaço para nada, escreve isso: abrandar também conta.</p>
+    <div class="field"><label for="pArea">Área escolhida</label><select id="pArea"></select></div>
+    <div class="field"><label for="pQuero">O que quero sentir ou mudar</label><textarea id="pQuero" placeholder="ex.: chegar ao fim do dia com menos cansaço"></textarea></div>
+    <div class="field"><label for="pPasso">O meu primeiro passo, pequeno e concreto</label><textarea id="pPasso" placeholder="ex.: caminhar 15 minutos com o carrinho às terças e quintas"></textarea></div>
+    <div class="field"><label for="pTrava">O que me pode travar, e o que faço se acontecer</label><textarea id="pTrava" placeholder="ex.: se chover, faço alongamentos em casa enquanto o bebé está no tapete"></textarea></div>
+    <div class="field"><label for="pAjuda">Quem me pode ajudar, ou que tarefa posso passar a outra pessoa</label><textarea id="pAjuda" style="min-height:44px"></textarea></div>
+    <div class="row"><button class="btn" id="copiar">Copiar a minha roda e o plano</button><button class="btn ghost" id="recomecar">Recomeçar</button></div>
+    <textarea id="saida" hidden aria-label="Resumo"></textarea>
+    <p class="status" id="msg" aria-live="polite"></p>
+    <div class="note">Se em várias áreas estás muito em baixo há mais de duas semanas, se a tristeza ou a ansiedade não largam, ou se te sentes sem esperança, a roda não é o primeiro passo: fala com o teu médico de família ou com uma psicóloga. Em urgência: 112 ou SNS 24 (808 24 24 24).</div>
+  </section>
+
+  <p class="src">Adaptado à gravidez e ao pós-parto a partir da Wheel of Health da Duke Integrative Medicine (Duke University). Ferramenta de promoção do bem-estar; não substitui avaliação nem acompanhamento profissional. Nada do que escreves aqui é guardado.</p>
+</div>
+
+<script>
+const AREAS=[
+ {id:'mov',curto:'Movimento',nome:'Mexer e descansar',orig:'Movimento, exercício e descanso',
+  inclui:'Movimento adaptado à tua fase, sono possível, pausas, recuperação do corpo e do pavimento pélvico.',
+  perg:['Quando foi a última vez que o meu corpo se mexeu por prazer?','Estou a dormir sempre que posso, ou a ocupar esse tempo com tarefas?','O meu corpo está a recuperar ao ritmo dele, ou estou a apressá-lo?'],
+  passos:['Caminhar 15 minutos ao ar livre, com o bebé no carrinho ou no sling.','Uma sesta quando o bebé dorme, pelo menos uma vez por semana, sem culpa.','Marcar uma avaliação com fisioterapeuta do pavimento pélvico.']},
+ {id:'nut',curto:'Alimentação',nome:'Alimentar-me, e não só ao bebé',orig:'Nutrição',
+  inclui:'Refeições regulares e nutritivas, água ao longo do dia, comer com algum tempo e alguma atenção.',
+  perg:['Hoje comi sentada pelo menos uma vez?','Tenho comida fácil e nutritiva à mão para os dias difíceis?','Bebo água enquanto alimento o bebé?'],
+  passos:['Garrafa de água e um lanche ao lado do sítio onde alimentas o bebé.','Cozinhar a dobrar uma vez por semana e congelar metade.','Uma refeição por dia longe do telemóvel.']},
+ {id:'cre',curto:'Crescer',nome:'Crescer como pessoa',orig:'Desenvolvimento pessoal e profissional',
+  inclui:'A tua identidade além da maternidade, o regresso ao trabalho, aprender, criar, os teus projetos.',
+  perg:['Que parte de mim tenho deixado em pausa?','O que gostava de aprender ou retomar, nem que fosse um pouco?','Como imagino o regresso ao trabalho, e o que me preocupa?'],
+  passos:['Trinta minutos por semana para algo só teu: ler, criar, um curso, um projeto.','Escrever três coisas que aprendeste sobre ti desde que és mãe ou pai.','Conversar com alguém que já regressou ao trabalho depois da licença.']},
+ {id:'amb',curto:'Casa',nome:'A casa que me cuida',orig:'Ambiente físico',
+  inclui:'Um espaço que facilita em vez de pesar: luz natural, um canto para alimentar o bebé, arrumação possível, natureza.',
+  perg:['Há um canto da casa onde me sinto bem?','O que no meu espaço me cansa todos os dias?','Quanto tempo passo ao ar livre por semana?'],
+  passos:['Preparar um canto de alimentação com almofada, água, luz suave e algo bonito.','Abrir as janelas e apanhar luz natural de manhã.','Escolher uma só zona da casa para manter arrumada; o resto pode esperar.']},
+ {id:'rel',curto:'Relações',nome:'Casal, família e aldeia',orig:'Relações e comunicação',
+  inclui:'A relação com o parceiro ou parceira, a família alargada, as amigas, outras mães, pedir e aceitar ajuda.',
+  perg:['Com quem posso falar de como me sinto de verdade?','O meu parceiro ou parceira sabe do que preciso esta semana?','A quem ainda não pedi ajuda por vergonha ou orgulho?'],
+  passos:['Dez minutos de conversa a dois por semana, sem telemóveis.','Pedir uma coisa concreta a uma pessoa da tua rede.','Juntar-te a um grupo de mães, uma caminhada ou um playgroup.']},
+ {id:'sen',curto:'Sentido',nome:'Sentido e valores',orig:'Espiritualidade',
+  inclui:'O que dá sentido a esta fase, os valores da família que queres ser, rituais, gratidão, ligação a algo maior.',
+  perg:['Que família quero ser?','Pelo que estou grata hoje, mesmo num dia difícil?','Que rituais me ajudam a sentir que a vida tem um fio?'],
+  passos:['À noite, nomear em voz alta um momento bom do dia.','Escolher com o teu parceiro três palavras para a família que querem ser.','Criar um pequeno ritual: uma vela, uma música, um passeio ao domingo.']},
+ {id:'mc',curto:'Corpo e emoções',nome:'Corpo e emoções',orig:'Ligação mente-corpo',
+  inclui:'Reparar no corpo, respirar, acolher emoções difíceis, autocompaixão, pausas que acalmam o sistema nervoso.',
+  perg:['Onde sinto o cansaço ou a tensão no meu corpo?','Como falo comigo quando as coisas correm mal?','O que me acalma em menos de dois minutos?'],
+  passos:['Três respirações lentas antes de pegar no telemóvel de manhã.','Mão no peito e uma frase gentil nos momentos difíceis.','Dez minutos de trabalhos manuais ou de música por semana.']},
+ {id:'cui',curto:'Cuidados de saúde',nome:'Cuidados de saúde',orig:'Cuidados profissionais: prevenção e intervenção',
+  inclui:'Consultas de vigilância e de pós-parto, saúde mental, fisioterapia, pediatria, saber a quem recorrer.',
+  perg:['Fiz, ou tenho marcada, a consulta de revisão do pós-parto?','Sei a quem ligar se não estiver bem?','Há alguma queixa no meu corpo ou no meu humor que tenho adiado?'],
+  passos:['Marcar a consulta que andas a adiar.','Guardar no telemóvel os contactos do centro de saúde e do SNS 24 (808 24 24 24).','Falar com uma psicóloga perinatal se o humor ou a ansiedade te preocupam.']}
+];
+const val={};AREAS.forEach(a=>val[a.id]=5);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+
+$('areas').innerHTML=AREAS.map(a=>`<article class="card area" id="a-${a.id}">
+  <div class="area-top"><h3>${esc(a.nome)}<span>${esc(a.orig)}</span></h3><span class="score" id="s-${a.id}">5</span></div>
+  <p class="inclui">${esc(a.inclui)}</p>
+  <div><input type="range" min="1" max="10" value="5" id="r-${a.id}" aria-label="${esc(a.nome)}: de 1 a 10"><div class="scale-l"><span>1 · precisa de atenção</span><span>10 · está a nutrir-me</span></div></div>
+  <details><summary>Perguntas e pequenos passos</summary>
+    <div class="sub"><b>Para refletir</b><ul>${a.perg.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>
+    <div class="sub"><b>Pequenos passos possíveis</b><ul>${a.passos.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>
+    <div class="row" style="margin-top:10px"><button class="btn ghost small" data-escolher="${a.id}">Escolher esta área para o plano</button></div>
+  </details>
+</article>`).join('');
+
+$('pArea').innerHTML=AREAS.map(a=>`<option value="${a.id}">${esc(a.nome)}</option>`).join('');
+
+function roda(){
+  const W=360,cx=180,cy=180,R=118,n=AREAS.length,step=2*Math.PI/n;
+  const pt=(i,r)=>{const ang=-Math.PI/2+step*i;return [cx+r*Math.cos(ang),cy+r*Math.sin(ang)];};
+  let g='';
+  [2,4,6,8,10].forEach(k=>{g+=`<circle cx="${cx}" cy="${cy}" r="${R*k/10}" fill="none" style="stroke:var(--line)" stroke-width="1"/>`;});
+  AREAS.forEach((a,i)=>{const [x,y]=pt(i,R);g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" style="stroke:var(--line)"/>`;});
+  // wedges proportional to score
+  AREAS.forEach((a,i)=>{const r=R*val[a.id]/10,a0=-Math.PI/2+step*(i-.5)+.02,a1=-Math.PI/2+step*(i+.5)-.02;
+    const x0=cx+r*Math.cos(a0),y0=cy+r*Math.sin(a0),x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1);
+    g+=`<path d="M${cx} ${cy}L${x0.toFixed(1)} ${y0.toFixed(1)}A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}Z" style="fill:var(--wheel-fill);stroke:var(--wheel)" stroke-width="1.25"><title>${esc(a.nome)}: ${val[a.id]} de 10</title></path>`;});
+  AREAS.forEach((a,i)=>{const [x,y]=pt(i,R+22),anc=Math.abs(x-cx)<8?'middle':x>cx?'start':'end';
+    const words=a.curto.split(' ');const lines=words.length>2?[words.slice(0,2).join(' '),words.slice(2).join(' ')]:[a.curto];
+    g+=`<text x="${x.toFixed(1)}" y="${(y+4-(lines.length-1)*7).toFixed(1)}" text-anchor="${anc}" font-size="11.5" style="fill:var(--ink)">${lines.map((l,k)=>`<tspan x="${x.toFixed(1)}" dy="${k?14:0}">${esc(l)}</tspan>`).join('')}</text>`;
+    const [sx,sy]=pt(i,R*val[a.id]/10+ (val[a.id]>8?-10:10));
+    g+=`<text x="${sx.toFixed(1)}" y="${(sy+4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--calm)">${val[a.id]}</text>`;});
+  g+=`<circle cx="${cx}" cy="${cy}" r="20" style="fill:var(--paper);stroke:var(--accent)" stroke-width="1.5"/><text x="${cx}" y="${cy+5}" text-anchor="middle" font-size="13" font-weight="600" style="fill:var(--accent)">tu</text>`;
+  $('roda').innerHTML=`<svg viewBox="-75 0 510 360" width="100%" role="img" aria-label="A tua roda da saúde perinatal">${g}</svg>`;
+  const vs=Object.values(val),m=vs.reduce((s,v)=>s+v,0)/vs.length;
+  const forte=AREAS.reduce((b,a)=>val[a.id]>val[b.id]?a:b),fraca=AREAS.reduce((b,a)=>val[a.id]<val[b.id]?a:b);
+  $('media').textContent=`Média ${m.toLocaleString('pt-PT',{maximumFractionDigits:1})} de 10. A área que mais te nutre agora: ${forte.nome.toLowerCase()}. A que pede mais atenção: ${fraca.nome.toLowerCase()}.`;
+}
+AREAS.forEach(a=>{$('r-'+a.id).addEventListener('input',e=>{val[a.id]=+e.target.value;$('s-'+a.id).textContent=val[a.id];roda();});});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-escolher]');if(!b)return;$('pArea').value=b.dataset.escolher;foco();$('plano').scrollIntoView({behavior:'smooth',block:'start'});});
+function foco(){AREAS.forEach(a=>$('a-'+a.id).classList.toggle('focus',a.id===$('pArea').value));const a=AREAS.find(x=>x.id===$('pArea').value);$('pPasso').placeholder='ex.: '+a.passos[0].charAt(0).toLowerCase()+a.passos[0].slice(1);}
+$('pArea').addEventListener('change',foco);
+$('copiar').onclick=async()=>{
+  const a=AREAS.find(x=>x.id===$('pArea').value),d=new Date().toLocaleDateString('pt-PT');
+  const txt=`A minha Roda da Saúde Perinatal · ${d}\n\n`+AREAS.map(x=>`${x.nome}: ${val[x.id]}/10`).join('\n')+`\n\nÁrea escolhida: ${a.nome}\nO que quero: ${$('pQuero').value.trim()||'—'}\nPrimeiro passo: ${$('pPasso').value.trim()||'—'}\nO que me pode travar: ${$('pTrava').value.trim()||'—'}\nQuem me ajuda: ${$('pAjuda').value.trim()||'—'}`;
+  try{await navigator.clipboard.writeText(txt);$('msg').textContent='Copiado. Guarda nas notas do telemóvel ou envia à tua psicóloga.';}
+  catch(err){$('saida').hidden=false;$('saida').value=txt;$('saida').select();$('msg').textContent='O texto ficou selecionado: copia-o à mão.';}};
+$('recomecar').onclick=function(){
+  if(!this.dataset.armed){this.dataset.armed='1';this.textContent='Confirmar: recomeçar';$('msg').textContent='Carrega outra vez para pôr tudo a zero.';return;}
+  AREAS.forEach(a=>{val[a.id]=5;$('r-'+a.id).value=5;$('s-'+a.id).textContent=5;});['pQuero','pPasso','pTrava','pAjuda'].forEach(id=>$(id).value='');
+  this.dataset.armed='';this.textContent='Recomeçar';$('msg').textContent='';$('saida').hidden=true;roda();};
+roda();foco();
+</script>
+
+
+<script src="js/app.js"></script>
+</body></html>

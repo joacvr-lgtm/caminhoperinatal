@@ -1,0 +1,30 @@
+/* Base partilhada pela aplicação: paleta Aproximar, margens seguras do telemóvel, faixa de cor no topo e barra de navegação entre módulos.
+   Paleta Aproximar: verde #4E5C47 (títulos, botões), mostarda #D3A136 (destaques, faixa), bege #DED8BD (linhas, fundos secundários),
+   ferrugem #A14F1C (itálicos, etiquetas, sobretítulos), creme #F3F1E6 (fundo). A mostarda só serve de preenchimento: como texto não se lê. */
+:root{
+  --verde:#4E5C47; --mostarda:#D3A136; --mostarda-soft:#F6EACB; --bege:#DED8BD; --ferrugem:#A14F1C; --creme:#F3F1E6;
+  --bg:var(--creme); --paper:#FBFAF4; --ink:#262B22; --muted:#62645A; --line:var(--bege);
+  --accent:var(--ferrugem); --accent-soft:#F2E3D6; --calm:var(--verde); --calm-soft:#E3E6DA;
+  --ok:#3f7a52; --ok-soft:#dcebe0; --warn:#9a6a12; --warn-soft:#f3e6c9; --risk:#a3343a; --risk-soft:#f4dcdd;
+  --display:"Lora", Georgia, "Times New Roman", serif;
+  --body:"Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);-webkit-tap-highlight-color:transparent}
+img{max-width:100%}
+h1,h2{color:var(--verde)}
+
+/* Faixa no topo, como nas peças do Caminho: verde, ferrugem e mostarda */
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:calc(6px + env(safe-area-inset-top,0px));z-index:20;background:linear-gradient(90deg,var(--verde) 0 40%,var(--ferrugem) 40% 70%,var(--mostarda) 70% 100%)}
+a{color:var(--accent)}
+[hidden]:not([hidden=until-found i]){display:none!important}
+
+/* Barra da aplicação */
+.appbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font:500 .88rem var(--body)}
+.appbar .marca{display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;font:400 1.15rem var(--display)}
+.appbar .marca img{width:28px;height:28px;border-radius:8px}
+.appbar .mods{display:flex;gap:6px}
+.appbar .mods a{color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:.3rem .8rem}
+.appbar .mods a[aria-current="page"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.offline{font-size:.8rem;color:var(--warn)}

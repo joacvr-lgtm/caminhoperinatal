@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-PT" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Psicoeducação · O Caminho Perinatal</title>
+<meta name="description" content="Psicoeducação Florescer e Cuidar e a Roda da Saúde Perinatal, área a área.">
+<meta name="theme-color" content="#F3F1E6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Perinatal">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/paginas.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="appbar">
+    <a class="marca" href="./"><img src="icons/icon.svg" alt="">O Caminho</a>
+    <span class="offline" data-offline hidden>Sem rede · a funcionar offline</span>
+    <div class="mods" role="navigation" aria-label="Secções">
+      <a href="caminho.html">Mapa</a>
+      <a href="psicoeducacao.html" aria-current="page">Psicoeducação</a>
+      <a href="aldeia.html">A Aldeia</a>
+    </div>
+  </div>
+<section class="panel" data-panel="psico">
+    <div><div class="eyebrow">Para entregar às famílias</div><h2>Psicoeducação</h2></div>
+    <p class="lead">Textos curtos para enviar depois da sessão, usar nos grupos ou adaptar para as redes. Copia e personaliza.</p>
+    <div class="card">
+      <div class="eyebrow">Para casais na gravidez · 28 a 34 semanas</div>
+      <h3>Plano do 4.º Trimestre</h3>
+      <p class="small">Guia para preparar, a dois, as primeiras 12 semanas com o bebé: expectativas, rede de apoio, divisão de tarefas, noites, visitas, sinais de alerta e o casal. Para usar em sessão ou entregar como trabalho de casa.</p>
+      <div class="row"><a class="btn ghost" href="plano-4-trimestre.html">Abrir o Plano do 4.º Trimestre</a><a class="btn ghost" href="plano-4-trimestre-venda.html">Página de vendas</a><a class="btn ghost" href="kit-lancamento.html">Kit de lançamento</a></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Fim da licença · mães e pais</div>
+      <h3>Guia do Regresso ao Trabalho</h3>
+      <p class="small">A transição por dentro, os direitos em Portugal, um plano em cinco fases, o guião da conversa com a chefia, a casa e o casal, e uma secção para empresas.</p>
+      <div class="row"><a class="btn ghost" href="regresso-trabalho.html">Abrir o guia</a></div>
+    </div>
+    <div class="seg" id="psicoSeg" role="group" aria-label="Tipo de psicoeducação">
+      <button aria-pressed="true" data-v="florescer">Florescer</button>
+      <button aria-pressed="false" data-v="cuidar">Cuidar</button>
+    </div>
+    <p class="small" id="psicoSegTxt"></p>
+    <div class="card" id="rodaCard">
+      <div class="eyebrow">Autoavaliação · gravidez e pós-parto</div>
+      <h3>Roda da Saúde Perinatal</h3>
+      <p class="small">Oito áreas adaptadas da Wheel of Health da Duke: a pessoa avalia cada uma de 1 a 10, vê a sua roda e escolhe um pequeno passo para a semana. Serve em sessão, nos grupos ou como isco de leads.</p>
+      <p class="note" style="font-size:.88rem"><strong>Antes de a usares:</strong> não a proponhas como tarefa a quem está deprimida, muito ansiosa ou perfeccionista; aí, primeiro avaliação e cuidado. Apresenta-a sempre como convite, uma área de cada vez, e incluindo o parceiro ou parceira.</p>
+      <div class="row"><a class="btn ghost" href="roda.html">Abrir a Roda</a></div>
+    </div>
+    <div id="rodaGrupo" class="panel" style="gap:10px"><h3>A Roda, área a área</h3><div class="panel" id="rodaLista"></div></div>
+    <h3 id="florescerTit">Temas para florescer</h3>
+    <div class="panel" id="florescerLista"></div>
+    <div class="panel" id="psicoLista" hidden></div>
+  </section>
+  <footer>O Caminho Perinatal · Joana Carvalho, psicóloga perinatal.</footer>
+</div>
+<script src="js/conteudos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
