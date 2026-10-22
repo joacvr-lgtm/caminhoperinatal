@@ -13,9 +13,37 @@ O teu negócio numa aplicação privada: o mapa da doença à saúde perinatal, 
 
 Alguns elementos do mapa (questionários, guias dos instrumentos, consultas) vivem no Consultório. Para abrirem diretamente, escreve o endereço do Consultório em `js/ligacoes.js`. Sem endereço, aparecem no mapa sem ligação.
 
+## CRM da equipa
+
+`crm.html` é o CRM partilhado pela equipa: clientes e subscritoras importadas da Shopify, membros da Aldeia, parceiras, convidadas, empresas e imprensa, com encomendas, histórico, tarefas e registo de quem fez o quê.
+
+**Regra:** no CRM nunca entra informação clínica, nem quando a pessoa é também paciente. A página avisa quando uma nota parece ter informação de saúde. Isso fica só no Consultório, que é outra aplicação, só da psicóloga.
+
+**Como funciona:**
+- O servidor (`src/worker.js`) corre no mesmo Worker do Cloudflare que serve as páginas.
+- Os dados ficam numa base de dados D1 criada com a jurisdição UE.
+- Cada pedido ao CRM é verificado duas vezes: pelo Cloudflare Access e, no servidor, pela assinatura do Access, pela aplicação certa e, se `EQUIPA_EMAILS` estiver preenchido, pela lista da equipa.
+- Sem configuração, o CRM fica fechado.
+- Nada do CRM fica guardado nos aparelhos (o `sw.js` não guarda `/api/`).
+- A Shopify é só lida, nunca alterada. A primeira importação traz tudo; depois, todos os dias às 4h17 (UTC), vem só o que mudou. Também se pode atualizar à mão na página.
+- Contactos criados à mão juntam-se à cliente da Shopify com o mesmo email.
+- Um contacto apagado no CRM não volta a ser importado. Apaga-o também na Shopify.
+
+### Configurar (uma vez)
+
+1. **Base de dados:** Cloudflare → *Storage & databases → D1 → Create*, nome `caminho-crm`, em *Location* escolher **Jurisdiction: EU**. Copiar o *Database ID* para `database_id` em `wrangler.jsonc`.
+2. **Access:** em *Zero Trust → Access → Applications*, na aplicação do `caminhoperinatal`, a política *Allow* com os emails da equipa. Copiar o *Application Audience (AUD) Tag* para `ACCESS_AUD`, e o domínio da equipa (`<equipa>.cloudflareaccess.com`) para `ACCESS_TEAM_DOMAIN`. Opcional: os mesmos emails em `EQUIPA_EMAILS`.
+3. **Shopify:** em <https://dev.shopify.com> → *Apps → Create app* («CRM Caminho»). Na versão da app:
+   - permissões `read_customers`, `read_orders`, `read_all_orders` e `read_products`;
+   - em *Protected customer data*, nome, email e telefone.
+
+   Depois, *Release* e instalar na loja `palavraseoutrascoisas`.
+4. **Segredos:** no Worker `caminhoperinatal` → *Settings → Variables and Secrets*, juntar como **Secret** o `SHOPIFY_CLIENT_ID` e o `SHOPIFY_CLIENT_SECRET` da app. Nunca os escrevas em ficheiros nem em conversas.
+5. Abrir `crm.html` e carregar em *Atualizar da Shopify*.
+
 ## Dados
 
-O estado dos convidados da Aldeia e as listas de tarefas dos documentos ficam guardados só no aparelho. Não há servidor nem contas.
+O estado dos convidados da Aldeia e as listas de tarefas dos documentos ficam guardados só no aparelho. O CRM é a exceção: fica na base de dados do Caminho, partilhado pela equipa.
 
 ## Experimentar no computador
 
@@ -70,5 +98,7 @@ public/
   js/conteudos.js            textos e lógica da Psicoeducação e da Aldeia
   js/graficos.js             gráficos interativos dos documentos
   js/docs.js                 listas de tarefas que ficam marcadas
+  crm.html, js/crm.js        CRM da equipa
   js/app.js, sw.js           instalação e funcionamento offline
+src/worker.js                servidor do CRM (verificação do Access, base de dados, Shopify)
 ```
