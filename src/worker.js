@@ -23,10 +23,37 @@ const ESQUEMA = [
     id INTEGER PRIMARY KEY AUTOINCREMENT, quando TEXT NOT NULL, quem TEXT NOT NULL, acao TEXT NOT NULL, alvo TEXT)`,
   `CREATE TABLE IF NOT EXISTS config (chave TEXT PRIMARY KEY, valor TEXT)`,
   /* Clientes da Shopify apagadas aqui: não voltam a ser importadas. */
-  `CREATE TABLE IF NOT EXISTS apagados (shopify_id TEXT PRIMARY KEY, quando TEXT NOT NULL)`
+  `CREATE TABLE IF NOT EXISTS apagados (shopify_id TEXT PRIMARY KEY, quando TEXT NOT NULL)`,
+  /* Empresas, autarquias, IPSS, marcas e formação: uma linha por entidade, com a fase e a próxima ação. */
+  `CREATE TABLE IF NOT EXISTS oportunidades (
+    id TEXT PRIMARY KEY, entidade TEXT NOT NULL, tipo TEXT NOT NULL DEFAULT '', produto TEXT NOT NULL DEFAULT '', codigo TEXT NOT NULL DEFAULT '',
+    valor REAL, fase TEXT NOT NULL DEFAULT 'Por contactar', proxima_acao TEXT NOT NULL DEFAULT '', data_proxima TEXT,
+    responsavel TEXT NOT NULL DEFAULT '', notas TEXT NOT NULL DEFAULT '', criado_em TEXT NOT NULL, atualizado_em TEXT NOT NULL, atualizado_por TEXT NOT NULL DEFAULT '')`,
+  /* Tarefas da equipa (as de um contacto continuam no histórico desse contacto). ref é o id da folha antiga. */
+  `CREATE TABLE IF NOT EXISTS tarefas (
+    id TEXT PRIMARY KEY, ref TEXT UNIQUE, tarefa TEXT NOT NULL, detalhe TEXT NOT NULL DEFAULT '', area TEXT NOT NULL DEFAULT '',
+    responsavel TEXT NOT NULL DEFAULT '', prazo TEXT, estado TEXT NOT NULL DEFAULT 'Por fazer', origem TEXT NOT NULL DEFAULT '',
+    criado_em TEXT NOT NULL, atualizado_em TEXT NOT NULL, atualizado_por TEXT NOT NULL DEFAULT '')`
+];
+/* Colunas acrescentadas depois da primeira versão: entram sozinhas nas bases que já existem. */
+const COLUNAS_NOVAS = [
+  ['contactos', 'canal', "TEXT NOT NULL DEFAULT ''"], ['contactos', 'cidade', "TEXT NOT NULL DEFAULT ''"],
+  ['contactos', 'estado_lead', "TEXT NOT NULL DEFAULT ''"], ['contactos', 'interesse', "TEXT NOT NULL DEFAULT ''"],
+  /* A fase da vida (gravidez, pós-parto...) é informação de saúde: só se guarda com consentimento explícito. */
+  ['contactos', 'consent_fase', "TEXT NOT NULL DEFAULT 'desconhecido'"], ['contactos', 'fase', "TEXT NOT NULL DEFAULT ''"],
+  /* Sem motivo à vista: só a responsável marca, e a equipa só sabe que não deve enviar ações comerciais. */
+  ['contactos', 'nao_contactar', 'INTEGER NOT NULL DEFAULT 0']
 ];
 const TIPOS = ['Cliente', 'Subscritora', 'Aldeia', 'Grupo', 'Parceira', 'Convidada', 'Empresa', 'Autarquia ou IPSS', 'Imprensa', 'Fornecedor', 'Outro'];
 const TIPOS_INTERACAO = ['nota', 'email', 'chamada', 'reuniao', 'tarefa'];
+const LISTAS = {
+  fases_oportunidade: ['Por contactar', 'Contactado', 'Reunião marcada', 'Proposta enviada', 'Ganha', 'Perdida', 'Em pausa'],
+  tipos_oportunidade: ['Empresa', 'Autarquia ou IPSS', 'Marca', 'Formação', 'Media', 'Outro'],
+  estados_tarefa: ['Por fazer', 'Em curso', 'Feito', 'Em pausa'],
+  areas: ['Negócio', 'Loja e produtos', 'Conteúdo', 'Consultório', 'Fiscal e legal', 'Aldeia', 'Grupos', 'Outro'],
+  estados_lead: ['Novo', 'Contactado', 'Interessado', 'Cliente', 'Sem interesse'],
+  fases_vida: ['A pensar ter filhos', 'Gravidez', 'Pós-parto', 'Até aos 2 anos', 'Outra']
+};
 const agora = () => new Date().toISOString();
 const uid = () => crypto.randomUUID();
 
@@ -80,6 +107,11 @@ let esquemaPronto = false;
 async function prepararBD(env) {
   if (esquemaPronto) return;
   await env.DB.batch(ESQUEMA.map(s => env.DB.prepare(s)));
+  const existentes = {};
+  for (const [tabela, coluna, tipo] of COLUNAS_NOVAS) {
+    existentes[tabela] ??= new Set((await env.DB.prepare(`PRAGMA table_info(${tabela})`).all()).results.map(c => c.name));
+    if (!existentes[tabela].has(coluna)) await env.DB.prepare(`ALTER TABLE ${tabela} ADD COLUMN ${coluna} ${tipo}`).run();
+  }
   esquemaPronto = true;
 }
 const registar = (env, quem, acao, alvo = null) =>
@@ -94,6 +126,45 @@ const gravarConfig = (env, chave, valor) =>
 const lista = v => { try { const a = JSON.parse(v || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } };
 const contactoPublico = c => ({ ...c, tipos: lista(c.tipos), marcas: lista(c.marcas) });
 const texto = (v, max = 4000) => String(v ?? '').slice(0, max).trim();
+const dataISO = v => { const d = String(v || '').trim(); if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return null; const t = new Date(d + 'T00:00:00Z'); return !isNaN(t) && t.toISOString().slice(0, 10) === d ? d : null; };
+const numero = v => { const n = Number(String(v ?? '').replace(/\s|€/g, '').replace(/\.(?=\d{3}\b)/g, '').replace(',', '.')); return String(v ?? '').trim() === '' || !isFinite(n) ? null : n; };
+const daLista = (v, l, padrao = '') => l.find(x => x.toLowerCase() === String(v || '').trim().toLowerCase()) || (String(v || '').trim() ? String(v).trim().slice(0, 60) : padrao);
+const eResponsavel = (env, quem) => !!env.RESPONSAVEL_EMAIL && quem === String(env.RESPONSAVEL_EMAIL).toLowerCase();
+
+function camposOportunidade(c) {
+  const o = {};
+  if ('entidade' in c) o.entidade = texto(c.entidade, 200);
+  if ('tipo' in c) o.tipo = daLista(c.tipo, LISTAS.tipos_oportunidade);
+  if ('produto' in c) o.produto = texto(c.produto, 200);
+  if ('codigo' in c) o.codigo = texto(c.codigo, 40);
+  if ('valor' in c) o.valor = numero(c.valor);
+  if ('fase' in c) o.fase = daLista(c.fase, LISTAS.fases_oportunidade, 'Por contactar');
+  if ('proxima_acao' in c) o.proxima_acao = texto(c.proxima_acao, 500);
+  if ('data_proxima' in c) o.data_proxima = dataISO(c.data_proxima);
+  if ('responsavel' in c) o.responsavel = texto(c.responsavel, 80);
+  if ('notas' in c) o.notas = texto(c.notas);
+  return o;
+}
+function camposTarefa(c) {
+  const o = {};
+  if ('tarefa' in c) o.tarefa = texto(c.tarefa, 300);
+  if ('detalhe' in c) o.detalhe = texto(c.detalhe);
+  if ('area' in c) o.area = daLista(c.area, LISTAS.areas);
+  if ('responsavel' in c) o.responsavel = texto(c.responsavel, 80);
+  if ('prazo' in c) o.prazo = dataISO(c.prazo);
+  if ('estado' in c) o.estado = daLista(String(c.estado || '').replace(/^feita$/i, 'Feito'), LISTAS.estados_tarefa, 'Por fazer');
+  if ('origem' in c) o.origem = texto(c.origem, 120);
+  return o;
+}
+async function inserir(env, tabela, campos) {
+  const k = Object.keys(campos);
+  await env.DB.prepare(`INSERT INTO ${tabela} (${k.join(', ')}) VALUES (${k.map(() => '?').join(', ')})`).bind(...k.map(x => campos[x])).run();
+}
+async function atualizar(env, tabela, id, campos) {
+  const k = Object.keys(campos);
+  if (!k.length) return;
+  await env.DB.prepare(`UPDATE ${tabela} SET ${k.map(x => x + ' = ?').join(', ')} WHERE id = ?`).bind(...k.map(x => campos[x]), id).run();
+}
 
 /* ---------- Shopify (só leitura) ---------- */
 function lojaShopify(env) {
@@ -195,6 +266,94 @@ async function passoSincronizacao(env, quem, passo) {
   return { feito: true, resumo };
 }
 
+/* ---------- Importação de uma folha (colada do Google Sheets ou de um CSV) ---------- */
+const chaveLinha = o => Object.fromEntries(Object.entries(o || {}).map(([k, v]) => [String(k).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '_'), String(v ?? '').trim()]));
+const sim = v => /^(s|sim|yes|y|x|1|true|verdadeiro)$/i.test(String(v || '').trim());
+async function importar(env, quem, tipo, linhasCruas) {
+  const linhas = linhasCruas.map(chaveLinha), t = agora();
+  const r = { criados: 0, atualizados: 0, ignorados: 0, avisos: [] };
+  const ops = [];
+  if (tipo === 'contactos') {
+    const todos = (await env.DB.prepare('SELECT id, nome, email, notas, consent_fase FROM contactos').all()).results;
+    const porEmail = new Map(todos.filter(c => c.email).map(c => [c.email, c]));
+    const porNome = new Map(todos.filter(c => !c.email).map(c => [c.nome.toLowerCase(), c]));
+    let fasesSemConsentimento = 0, marcasConsulta = 0, consultaIgnorada = 0;
+    for (const l of linhas) {
+      const chave = l.email || l.chave || '';
+      const email = chave.includes('@') ? chave.toLowerCase() : null;
+      const nome = texto(l.nome || (!email ? chave : ''), 200);
+      if ((!nome && !email) || /\(exemplo/i.test(nome)) { r.ignorados++; continue; }
+      const consent = sim(l.consentimento_fase || l.consent_fase) ? 'sim' : null;
+      if (l.fase && !consent) fasesSemConsentimento++;
+      const nc = sim(l.em_consulta) || sim(l.nao_contactar);
+      if (nc && !eResponsavel(env, quem)) consultaIgnorada++;
+      const campos = {};
+      for (const k of ['canal', 'cidade', 'interesse']) if (l[k]) campos[k] = texto(l[k], 120);
+      if (l.estado_lead) campos.estado_lead = daLista(l.estado_lead, LISTAS.estados_lead);
+      if (l.telefone) campos.telefone = texto(l.telefone, 40);
+      if (consent) { campos.consent_fase = 'sim'; if (l.fase) campos.fase = daLista(l.fase, LISTAS.fases_vida); }
+      if (nc && eResponsavel(env, quem)) { campos.nao_contactar = 1; marcasConsulta++; }
+      const existente = (email && porEmail.get(email)) || (!email && porNome.get(nome.toLowerCase()));
+      if (existente) {
+        if (l.notas && !(existente.notas || '').includes(l.notas)) campos.notas = [existente.notas, texto(l.notas)].filter(Boolean).join('\n');
+        if (nome && !existente.nome) campos.nome = nome;
+        const k = Object.keys(campos);
+        if (k.length) ops.push(env.DB.prepare(`UPDATE contactos SET ${k.map(x => x + ' = ?').join(', ')}, atualizado_em = ?, atualizado_por = ? WHERE id = ?`).bind(...k.map(x => campos[x]), t, quem, existente.id));
+        r.atualizados++;
+      } else {
+        const novo = { id: uid(), nome: nome || email, email, tipos: '[]', origem: 'folha', notas: texto(l.notas), criado_em: t, atualizado_em: t, atualizado_por: quem, ...campos };
+        const k = Object.keys(novo);
+        ops.push(env.DB.prepare(`INSERT INTO contactos (${k.join(', ')}) VALUES (${k.map(() => '?').join(', ')})`).bind(...k.map(x => novo[x])));
+        if (email) porEmail.set(email, novo); else porNome.set(novo.nome.toLowerCase(), novo);
+        r.criados++;
+      }
+    }
+    if (fasesSemConsentimento) r.avisos.push(`${fasesSemConsentimento} ${fasesSemConsentimento === 1 ? 'fase não foi importada' : 'fases não foram importadas'}: a fase da vida é informação de saúde e só entra com uma coluna «consentimento_fase» a dizer Sim.`);
+    if (marcasConsulta) r.avisos.push(`${marcasConsulta} ${marcasConsulta === 1 ? 'pessoa ficou' : 'pessoas ficaram'} com «Não enviar ações comerciais». O motivo não foi guardado.`);
+    if (consultaIgnorada) r.avisos.push(`${consultaIgnorada} ${consultaIgnorada === 1 ? 'marca' : 'marcas'} de «em consulta» não ${consultaIgnorada === 1 ? 'foi importada' : 'foram importadas'}: só a responsável pode fazer esta importação.`);
+  } else if (tipo === 'oportunidades') {
+    const todas = (await env.DB.prepare('SELECT id, entidade, produto FROM oportunidades').all()).results;
+    const chave = (e, p) => `${String(e).toLowerCase()}|${String(p || '').toLowerCase()}`;
+    const mapa = new Map(todas.map(o => [chave(o.entidade, o.produto), o.id]));
+    for (const l of linhas) {
+      const c = camposOportunidade(l);
+      if (!c.entidade) { r.ignorados++; continue; }
+      const id = mapa.get(chave(c.entidade, c.produto));
+      if (id) {
+        const k = Object.keys(c);
+        ops.push(env.DB.prepare(`UPDATE oportunidades SET ${k.map(x => x + ' = ?').join(', ')}, atualizado_em = ?, atualizado_por = ? WHERE id = ?`).bind(...k.map(x => c[x]), t, quem, id));
+        r.atualizados++;
+      } else {
+        const novo = { id: uid(), fase: 'Por contactar', ...c, criado_em: t, atualizado_em: t, atualizado_por: quem };
+        const k = Object.keys(novo);
+        ops.push(env.DB.prepare(`INSERT INTO oportunidades (${k.join(', ')}) VALUES (${k.map(() => '?').join(', ')})`).bind(...k.map(x => novo[x])));
+        mapa.set(chave(c.entidade, c.produto), novo.id);
+        r.criados++;
+      }
+    }
+  } else if (tipo === 'tarefas') {
+    const refs = new Map((await env.DB.prepare('SELECT id, ref FROM tarefas WHERE ref IS NOT NULL').all()).results.map(x => [x.ref, x.id]));
+    for (const l of linhas) {
+      const c = camposTarefa(l), ref = texto(l.id || l.ref, 40) || null;
+      if (!c.tarefa) { r.ignorados++; continue; }
+      const id = ref && refs.get(ref);
+      if (id) {
+        const k = Object.keys(c);
+        ops.push(env.DB.prepare(`UPDATE tarefas SET ${k.map(x => x + ' = ?').join(', ')}, atualizado_em = ?, atualizado_por = ? WHERE id = ?`).bind(...k.map(x => c[x]), t, quem, id));
+        r.atualizados++;
+      } else {
+        const novo = { id: uid(), ref, estado: 'Por fazer', ...c, criado_em: t, atualizado_em: t, atualizado_por: quem };
+        const k = Object.keys(novo);
+        ops.push(env.DB.prepare(`INSERT INTO tarefas (${k.join(', ')}) VALUES (${k.map(() => '?').join(', ')})`).bind(...k.map(x => novo[x])));
+        if (ref) refs.set(ref, novo.id);
+        r.criados++;
+      }
+    }
+  } else return { erro: 'Tipo de importação desconhecido.' };
+  for (let i = 0; i < ops.length; i += 100) await env.DB.batch(ops.slice(i, i + 100));
+  return r;
+}
+
 /* ---------- API ---------- */
 async function api(request, env, url) {
   const id = await quemE(request, env);
@@ -207,15 +366,94 @@ async function api(request, env, url) {
   const corpo = m === 'GET' || m === 'DELETE' ? {} : await request.json().catch(() => ({}));
 
   if (partes[0] === 'eu' && m === 'GET') {
-    return json({ email: quem, tipos: TIPOS, tipos_interacao: TIPOS_INTERACAO, sincronizacao: JSON.parse((await lerConfig(env, 'ultima_sincronizacao')) || 'null'), shopify: !!(env.SHOPIFY_LOJA && env.SHOPIFY_CLIENT_ID && env.SHOPIFY_CLIENT_SECRET) });
+    return json({ email: quem, responsavel: eResponsavel(env, quem), tipos: TIPOS, tipos_interacao: TIPOS_INTERACAO, listas: LISTAS, sincronizacao: JSON.parse((await lerConfig(env, 'ultima_sincronizacao')) || 'null'), shopify: !!(env.SHOPIFY_LOJA && env.SHOPIFY_CLIENT_ID && env.SHOPIFY_CLIENT_SECRET) });
   }
   if (partes[0] === 'sincronizar' && m === 'POST') {
     try { return json(await passoSincronizacao(env, quem, corpo.passo)); } catch (e) { return erro(e.message, 502); }
   }
-  if (partes[0] === 'tarefas' && m === 'GET') {
-    const r = await env.DB.prepare(`SELECT i.*, c.nome AS contacto_nome FROM interacoes i JOIN contactos c ON c.id = i.contacto_id
-      WHERE i.tipo = 'tarefa' AND i.feito = 0 ORDER BY COALESCE(i.prazo, '9999') LIMIT 200`).all();
-    return json(r.results);
+  if (partes[0] === 'tarefas') {
+    const tid = partes[1];
+    if (!tid && m === 'GET') {
+      const estado = url.searchParams.get('estado') || 'abertas', resp = texto(url.searchParams.get('responsavel'), 80), area = texto(url.searchParams.get('area'), 60);
+      const where = [], args = [];
+      if (estado === 'abertas') where.push("estado IN ('Por fazer', 'Em curso')");
+      else if (estado !== 'todas') { where.push('estado = ?'); args.push(estado); }
+      if (resp) { where.push('responsavel = ?'); args.push(resp); }
+      if (area) { where.push('area = ?'); args.push(area); }
+      const gerais = await env.DB.prepare(`SELECT * FROM tarefas ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY COALESCE(prazo, '9999'), criado_em LIMIT 500`).bind(...args).all();
+      const contactos = await env.DB.prepare(`SELECT i.*, c.nome AS contacto_nome FROM interacoes i JOIN contactos c ON c.id = i.contacto_id
+        WHERE i.tipo = 'tarefa' AND i.feito = 0 ORDER BY COALESCE(i.prazo, '9999') LIMIT 200`).all();
+      const responsaveis = (await env.DB.prepare(`SELECT DISTINCT responsavel FROM tarefas WHERE responsavel <> '' UNION SELECT DISTINCT responsavel FROM oportunidades WHERE responsavel <> ''`).all()).results.map(r => r.responsavel).sort();
+      return json({ gerais: gerais.results, contactos: contactos.results, responsaveis });
+    }
+    if (!tid && m === 'POST') {
+      const c = camposTarefa(corpo);
+      if (!c.tarefa) return erro('Escreve a tarefa.', 400);
+      const t = agora(), id = uid();
+      await inserir(env, 'tarefas', { id, ...c, criado_em: t, atualizado_em: t, atualizado_por: quem });
+      await registar(env, quem, 'criar-tarefa', id);
+      return json({ id }, 201);
+    }
+    if (tid) {
+      const x = await env.DB.prepare('SELECT id FROM tarefas WHERE id = ?').bind(tid).first();
+      if (!x) return erro('Tarefa não encontrada.', 404);
+      if (m === 'PATCH') {
+        const c = camposTarefa(corpo);
+        if ('tarefa' in c && !c.tarefa) return erro('A tarefa não pode ficar vazia.', 400);
+        await atualizar(env, 'tarefas', tid, { ...c, atualizado_em: agora(), atualizado_por: quem });
+        await registar(env, quem, 'editar-tarefa', tid);
+        return json({ ok: true });
+      }
+      if (m === 'DELETE') {
+        await env.DB.prepare('DELETE FROM tarefas WHERE id = ?').bind(tid).run();
+        await registar(env, quem, 'apagar-tarefa', tid);
+        return json({ ok: true });
+      }
+    }
+  }
+  if (partes[0] === 'oportunidades') {
+    const oid = partes[1];
+    if (!oid && m === 'GET') {
+      const fase = texto(url.searchParams.get('fase'), 60), resp = texto(url.searchParams.get('responsavel'), 80);
+      const where = [], args = [];
+      if (fase === 'abertas') where.push("fase NOT IN ('Ganha', 'Perdida')");
+      else if (fase) { where.push('fase = ?'); args.push(fase); }
+      if (resp) { where.push('responsavel = ?'); args.push(resp); }
+      const r = await env.DB.prepare(`SELECT * FROM oportunidades ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY COALESCE(data_proxima, '9999'), entidade LIMIT 500`).bind(...args).all();
+      return json(r.results);
+    }
+    if (!oid && m === 'POST') {
+      const c = camposOportunidade(corpo);
+      if (!c.entidade) return erro('Falta a entidade.', 400);
+      const t = agora(), id = uid();
+      await inserir(env, 'oportunidades', { id, fase: 'Por contactar', ...c, criado_em: t, atualizado_em: t, atualizado_por: quem });
+      await registar(env, quem, 'criar-oportunidade', id);
+      return json({ id }, 201);
+    }
+    if (oid) {
+      const x = await env.DB.prepare('SELECT id FROM oportunidades WHERE id = ?').bind(oid).first();
+      if (!x) return erro('Oportunidade não encontrada.', 404);
+      if (m === 'PATCH') {
+        const c = camposOportunidade(corpo);
+        if ('entidade' in c && !c.entidade) return erro('A entidade não pode ficar vazia.', 400);
+        await atualizar(env, 'oportunidades', oid, { ...c, atualizado_em: agora(), atualizado_por: quem });
+        await registar(env, quem, 'editar-oportunidade', oid);
+        return json({ ok: true });
+      }
+      if (m === 'DELETE') {
+        await env.DB.prepare('DELETE FROM oportunidades WHERE id = ?').bind(oid).run();
+        await registar(env, quem, 'apagar-oportunidade', oid);
+        return json({ ok: true });
+      }
+    }
+  }
+  if (partes[0] === 'importar' && m === 'POST') {
+    const linhas = Array.isArray(corpo.linhas) ? corpo.linhas.slice(0, 1000) : [];
+    if (!linhas.length) return erro('Não há linhas para importar.', 400);
+    const r = await importar(env, quem, corpo.tipo, linhas);
+    if (r.erro) return erro(r.erro, 400);
+    await registar(env, quem, 'importar-folha', `${corpo.tipo}: ${r.criados} novos, ${r.atualizados} atualizados`);
+    return json(r);
   }
   if (partes[0] === 'contactos') {
     const cid = partes[1];
@@ -225,7 +463,7 @@ async function api(request, env, url) {
       if (q) { where.push('(lower(nome) LIKE ? OR lower(email) LIKE ? OR telefone LIKE ?)'); args.push(`%${q}%`, `%${q}%`, `%${q}%`); }
       if (tipo) { where.push('EXISTS (SELECT 1 FROM json_each(contactos.tipos) WHERE value = ?)'); args.push(tipo); }
       if (marca) { where.push('EXISTS (SELECT 1 FROM json_each(contactos.marcas) WHERE value = ?)'); args.push(marca); }
-      const sql = `SELECT id, nome, email, telefone, tipos, marcas, marketing, n_encomendas, total_gasto, origem, atualizado_em FROM contactos
+      const sql = `SELECT id, nome, email, telefone, tipos, marcas, marketing, n_encomendas, total_gasto, origem, estado_lead, nao_contactar, atualizado_em FROM contactos
         ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY atualizado_em DESC LIMIT 300`;
       const r = await env.DB.prepare(sql).bind(...args).all();
       const total = await env.DB.prepare('SELECT COUNT(*) AS n FROM contactos').first();
@@ -258,6 +496,16 @@ async function api(request, env, url) {
         if ('tipos' in corpo) { campos.push('tipos = ?'); args.push(JSON.stringify((Array.isArray(corpo.tipos) ? corpo.tipos : []).filter(x => TIPOS.includes(x)))); }
         if ('marketing' in corpo && ['sim', 'nao', 'desconhecido'].includes(corpo.marketing)) { campos.push('marketing = ?'); args.push(corpo.marketing); }
         if ('notas' in corpo) { campos.push('notas = ?'); args.push(texto(corpo.notas)); }
+        for (const k of ['canal', 'cidade', 'interesse']) if (k in corpo) { campos.push(`${k} = ?`); args.push(texto(corpo[k], 120)); }
+        if ('estado_lead' in corpo) { campos.push('estado_lead = ?'); args.push(daLista(corpo.estado_lead, LISTAS.estados_lead)); }
+        /* A fase só fica guardada com consentimento explícito; sem ele, apaga-se. */
+        const consent = ['sim', 'nao', 'desconhecido'].includes(corpo.consent_fase) ? corpo.consent_fase : c.consent_fase;
+        if ('consent_fase' in corpo) { campos.push('consent_fase = ?'); args.push(consent); }
+        if ('fase' in corpo || consent !== 'sim') { campos.push('fase = ?'); args.push(consent === 'sim' ? daLista(corpo.fase ?? c.fase, LISTAS.fases_vida) : ''); }
+        if ('nao_contactar' in corpo) {
+          if (!eResponsavel(env, quem)) return erro('Só a responsável pode mudar «Não enviar ações comerciais».', 403);
+          campos.push('nao_contactar = ?'); args.push(corpo.nao_contactar ? 1 : 0);
+        }
         if (!campos.length) return erro('Nada para alterar.', 400);
         campos.push('atualizado_em = ?', 'atualizado_por = ?'); args.push(agora(), quem);
         await env.DB.prepare(`UPDATE contactos SET ${campos.join(', ')} WHERE id = ?`).bind(...args, cid).run();

@@ -1,6 +1,6 @@
 /* Funcionamento offline: guarda a aplicação no aparelho na primeira visita.
    Ao mudar qualquer ficheiro, sobe a VERSAO para os aparelhos receberem a atualização. */
-const VERSAO='caminho-v3';
+const VERSAO='caminho-v4';
 const FICHEIROS=[
   './',
   'aldeia.html',
