@@ -354,9 +354,19 @@ async function importar(env, quem, tipo, linhasCruas) {
   return r;
 }
 
+/* ---------- Página para quem chega sem sessão do Access ---------- */
+function paginaFechada(motivo, estado) {
+  const html = `<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Acesso protegido</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#F3F1E6;color:#2B2F27;font:16px/1.55 system-ui,sans-serif;padding:16px}
+main{max-width:420px;background:#FBFAF4;border:1px solid #DED8BD;border-radius:16px;padding:24px}h1{margin:0 0 8px;font:400 1.8rem Georgia,serif;color:#4E5C47}p{margin:0 0 10px}small{color:#5F6458}</style></head>
+<body><main><h1>Acesso protegido</h1><p>Esta aplicação é privada. Só abre para a equipa, depois de entrar com o código enviado por email.</p>
+<p>Se fazes parte da equipa, fecha esta página e volta a abrir o endereço. Se continuar a aparecer, avisa a Joana.</p><small>${motivo.replace(/[<>&]/g, '')}</small></main></body></html>`;
+  return new Response(html, { status: estado, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } });
+}
+
 /* ---------- API ---------- */
-async function api(request, env, url) {
-  const id = await quemE(request, env);
+async function api(request, env, url, id) {
   if (id.falha) return erro(id.falha, id.estado || 401);
   if (!env.DB) return erro('A base de dados ainda não está ligada (DB).', 503);
   /* Escritas só com o cabeçalho próprio da aplicação: um site de fora não o consegue enviar sem autorização. */
@@ -556,9 +566,13 @@ async function api(request, env, url) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    /* Todas as páginas, e não só o CRM, exigem a sessão verificada do Access. Se um endereço novo ficar
+       sem Access por engano, a aplicação fecha-se em vez de ficar à vista de toda a gente. */
+    const id = await quemE(request, env);
     if (url.pathname.startsWith('/api/')) {
-      try { return await api(request, env, url); } catch (e) { return erro('Erro no servidor.', 500); }
+      try { return await api(request, env, url, id); } catch (e) { return erro('Erro no servidor.', 500); }
     }
+    if (id.falha) return paginaFechada(id.falha, id.estado || 401);
     return env.ASSETS.fetch(request);
   },
   /* Todos os dias, de madrugada, traz da Shopify o que mudou desde a última importação. */
