@@ -10,9 +10,9 @@
     // Todos os pedidos passam pelo servidor, que verifica a sessão do Access antes de mostrar qualquer página.
     "run_worker_first": true
   },
-  // Endereço próprio. O caminhoperinatal.joacvr.workers.dev continua a funcionar até a mudança estar confirmada.
+  // Endereço próprio. O antigo caminhoperinatal.joacvr.workers.dev fica desligado: há uma só porta de entrada.
   "routes": [{ "pattern": "caminhoperinatal.com", "custom_domain": true }],
-  "workers_dev": true,
+  "workers_dev": false,
   // Base de dados do CRM, criada no Cloudflare com a jurisdição UE (os dados ficam na União Europeia).
   "d1_databases": [
     { "binding": "DB", "database_name": "caminho-crm", "database_id": "d19323e2-3abe-42e3-9a70-02284cc33e6a" }
