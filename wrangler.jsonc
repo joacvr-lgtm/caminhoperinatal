@@ -10,9 +10,9 @@
     // Todos os pedidos passam pelo servidor, que verifica a sessão do Access antes de mostrar qualquer página.
     "run_worker_first": true
   },
-  // Endereço da aplicação interna. O caminhoperinatal.com fica livre para a loja (área de cliente), e o workers.dev desligado.
-  "routes": [{ "pattern": "app.caminhoperinatal.com", "custom_domain": true }],
-  "workers_dev": false,
+  // A aplicação interna vive em caminhoperinatal.joacvr.workers.dev, protegida pelo «Worker Access» (todas as URL).
+  // Sem domínio próprio: caminhoperinatal.com fica para a loja (área de cliente).
+  "workers_dev": true,
   // Base de dados do CRM, criada no Cloudflare com a jurisdição UE (os dados ficam na União Europeia).
   "d1_databases": [
     { "binding": "DB", "database_name": "caminho-crm", "database_id": "d19323e2-3abe-42e3-9a70-02284cc33e6a" }
