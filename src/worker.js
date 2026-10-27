@@ -92,7 +92,10 @@ async function quemE(request, env) {
     if (!ok || dados.iss !== `https://${env.ACCESS_TEAM_DOMAIN}` || dados.exp * 1000 < Date.now()) return { falha: 'Sessão inválida ou expirada.' };
     /* Sem AUD configurado, a API não dá dados: só mostra, a quem já passou pelo Access, o AUD desta aplicação para o copiar. */
     if (!env.ACCESS_AUD) return { falha: `Falta configurar o ACCESS_AUD. O desta aplicação é: ${aud.join(', ')}`, estado: 503 };
-    if (!aud.includes(env.ACCESS_AUD)) return { falha: 'Sessão inválida ou expirada.' };
+    /* Pode haver mais do que uma aplicação do Access (uma por endereço): ACCESS_AUD aceita vários códigos, separados por vírgulas.
+       Uma sessão verdadeira desta equipa, mas de uma aplicação ainda não autorizada, vê só o código para o acrescentar. */
+    const auds = String(env.ACCESS_AUD).split(/[\s,;]+/).filter(Boolean);
+    if (!aud.some(a => auds.includes(a))) return { falha: `Esta aplicação do Access ainda não está autorizada no Caminho. Código a acrescentar ao ACCESS_AUD: ${aud.join(', ')}`, estado: 403 };
     const email = String(dados.email || '').toLowerCase();
     const equipa = String(env.EQUIPA_EMAILS || '').toLowerCase().split(/[\s,;]+/).filter(Boolean);
     if (!email || (equipa.length && !equipa.includes(email))) return { falha: 'Este email não faz parte da equipa.', estado: 403 };
